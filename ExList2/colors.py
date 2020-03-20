@@ -9,7 +9,7 @@ Uses Illuminant d50 as white reference.
 Author:
     Victor Ferreira Ferrari - RA 187890
 
-Last modified: 19/03/2020
+Last modified: 20/03/2020
 '''
 
 import argparse
@@ -32,13 +32,15 @@ def main():
         raise TypeError('The values given for the RGB space are not integers!')
     
     # Check Ranges
-    error = (values < 0).any() if args.orig != 'xyz' and args.orig != 'cielab' else 0
+    error = (values < 0).any()
     if args.orig == 'hsv':
         error = error or values[0] >= 360.0 or values[1] > 1 or values[2] > 1
     elif args.orig == 'rgb':
         error = error or (values > 255).any()
     elif args.orig == 'cmy':
         error = error or (values > 100.0).any()
+    else:
+        error = 0       # Only errors in XYZ and CIELAB are reported in argparse.
     
     if error:
         print("Out of range! See 'help' for information on ranges.")
@@ -194,7 +196,6 @@ def rgb_to_xyz(rgb):
 
     # Linear conversion.
     trf=np.array([[0.4360747, 0.3850649, 0.1430804],[0.2225045, 0.7168786, 0.0606169],[0.0139322, 0.0971045, 0.7141733]])
-
     return np.dot(trf, rgb)
 
 # Conversion from sRGB to HSV.
@@ -242,7 +243,6 @@ def xyz_to_cie(xyz):
     L = 116*aux - 16
     a = 500*(f_xyz_cie(xyz[0]/Xn) - aux)
     b = 200*(aux - f_xyz_cie(xyz[2]/Zn))
-    
     return np.array([L,a,b])
 
 if __name__ == '__main__':
