@@ -11,7 +11,6 @@ Author:
 
 Last modified: 20/03/2020
 '''
-
 import argparse
 import numpy as np
 
@@ -97,7 +96,6 @@ def color_converter(s1, s2, values):
     else:
         values *= 255
         values = np.around(values).astype('int32')
-
     return values
 
 # Conversion from sRGB to CMY and CMY to sRGB.
@@ -121,7 +119,6 @@ def xyz_to_rgb(xyz):
     # Applying companding
     rgb[case1] *= 12.92
     rgb[case2] = 1.055*(rgb[case2]**(1/2.4)) - 0.055
-    
     return rgb
 
 # Conversion from HSV to sRGB.
@@ -220,6 +217,9 @@ def rgb_hsv(rgb):
         hue = 60*(2+(B-R)/C)
     else:
         hue = 60*(4+(R-G)/C)
+    
+    # Negative values.
+    hue = 360+hue if hue < 0 else hue
     
     # Saturation
     S = 0 if V==0 else C/V
