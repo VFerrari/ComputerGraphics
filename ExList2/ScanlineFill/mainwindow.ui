@@ -20,29 +20,67 @@
     </item>
     <item>
      <widget class="QWidget" name="widget" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="drawPushButton">
-         <property name="text">
-          <string>Draw</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="fillPushButton">
-         <property name="text">
-          <string>Fill</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="clearPushButton">
-         <property name="text">
-          <string>Clear</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QPushButton" name="clearPushButton">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>344</y>
+         <width>424</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="drawPushButton">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>100</y>
+         <width>424</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Draw</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="fillPushButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>222</y>
+         <width>360</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>424</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Fill</string>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="colorToolButton">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>222</y>
+         <width>64</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Color</string>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>

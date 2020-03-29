@@ -44,9 +44,11 @@ public:
 
     void clear();
     void setMode(char mode);
+    void setColor(QColor color);
 private:
     Ui::DrawingArea *ui;
     qPointsT qPoints;
+    QColor color;
     char mode;
 
     void scanlineFill(QPainter *paint);

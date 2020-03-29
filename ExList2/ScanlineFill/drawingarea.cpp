@@ -14,25 +14,20 @@ DrawingArea::DrawingArea(QWidget *parent) :
 
     this->qPoints = qPoints;
     this->mode = 'p';
+    this->color = Qt::black;
 
     // set white background
     pal.setColor(QPalette::Background, Qt::white);
     this->setAutoFillBackground(true);
     this->setPalette(pal);
     this->show();
-
-
-
 }
 
 DrawingArea::~DrawingArea(){
     delete ui;
 }
 
-
-
 /*
-
 Paint events are sent to widgets that need to UPDATE or REPAINT themselves,
 */
 void DrawingArea::paintEvent(QPaintEvent *){
@@ -53,7 +48,7 @@ void DrawingArea::paintEvent(QPaintEvent *){
         }
     }
     else{
-        painter.setPen(Qt::red);
+        painter.setPen(color);
         for(qPointsT::iterator it = qPoints.begin(); it != qPoints.end()-1; ++it){
             painter.drawLine(*it, *(it+1));
 
@@ -218,6 +213,11 @@ void DrawingArea::setMode(char mode){
     this->mode=mode;
 }
 
+void DrawingArea::setColor(QColor color){
+    this->color = color;
+}
+
 void DrawingArea::clear(){
     qPoints.clear();
+    this->color = Qt::black;
 }

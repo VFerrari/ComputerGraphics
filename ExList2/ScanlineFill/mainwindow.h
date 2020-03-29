@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QColorDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +20,8 @@ private slots:
     void on_drawPushButton_clicked();
 
     void on_fillPushButton_clicked();
+
+    void on_colorToolButton_clicked();
 
     void on_clearPushButton_clicked();
 
