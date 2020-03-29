@@ -12,8 +12,8 @@
 
 struct edge {
              int maxY, minY;
-             int currentX;
-             int xIncr;
+             double currentX;
+             double xIncr;
              };
 
 struct compare

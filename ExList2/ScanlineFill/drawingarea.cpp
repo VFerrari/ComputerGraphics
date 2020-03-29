@@ -60,7 +60,7 @@ void DrawingArea::paintEvent(QPaintEvent *){
             //draw last side: from begin to last
             painter.drawLine(*qPoints.begin(), *qPoints.rbegin());
         }
-        if(mode == 'f')
+        if(mode == 'f' && qPoints.size() > 2)
             scanlineFill(&painter);
     }
 }
@@ -79,7 +79,14 @@ std::priority_queue<edge*, std::vector<edge*>,compare> DrawingArea::createEdges(
 
         e = new edge;
         e->maxY = std::max(y0, y1);
-        e->xIncr = (x1-x0)/(y1-y0);
+
+        // Slope
+        if(x0 == x1)
+            e->xIncr = 0;
+        else
+            e->xIncr = (x1-x0)/(y1-y0);
+
+        // Other values.
         if(e->maxY == y0){
             e->currentX = x0;
             e->minY = y1;
@@ -100,7 +107,14 @@ std::priority_queue<edge*, std::vector<edge*>,compare> DrawingArea::createEdges(
 
     e = new edge;
     e->maxY = std::max(y0, y1);
-    e->xIncr = (x1-x0)/(y1-y0);
+
+    // Slope.
+    if(x0 == x1)
+        e->xIncr = 0;
+    else
+        e->xIncr = (x1-x0)/(y1-y0);
+
+    // Other values.
     if(e->maxY == y0){
         e->currentX = x0;
         e->minY = y1;
@@ -126,6 +140,7 @@ void DrawingArea::scanlineFill(QPainter *paint){
 
     edge* e;
     int scanline, maxY, currX;
+    int size;
 
     // Building edges
     ET = createEdges();
@@ -140,21 +155,20 @@ void DrawingArea::scanlineFill(QPainter *paint){
     scanline = e->minY;
     maxY = e->maxY;
 
-    printf("cheguei aqui\n");
-
     // While the max Y is not reached (to be updated if needed)
     do{
+
         // Delete finished edges.
-        for(std::forward_list<edge*>::iterator it = AET.before_begin(); it != std::prev(AET.end()); ++it){
-            printf("deletando\n");
-            if((*std::next(it))->maxY == scanline){
-                AET.erase_after(it);
+        for(auto it = AET.before_begin(); it != AET.end(); ++it){
+            if(std::next(it) != AET.end()){
+                if((*std::next(it))->maxY == scanline){
+                    AET.erase_after(it);
+                }
             }
         }
-        printf("Deletado\n");
 
         // Insert edges with same minY.
-        while (ET.top()->minY == scanline){
+        while (!ET.empty() && ET.top()->minY == scanline){
             e = ET.top();
             ET.pop();
 
@@ -165,8 +179,6 @@ void DrawingArea::scanlineFill(QPainter *paint){
 
         // Sort AET by X
         AET.sort(compare_AET_X);
-
-        printf("Sortado\n");
 
         // Fills line between pairs of X.
         for(auto it = AET.begin(); it != AET.end(); ++it){
@@ -179,7 +191,7 @@ void DrawingArea::scanlineFill(QPainter *paint){
             it = std::next(it);
             e = *it;
 
-            paint->drawLine(currX, scanline, e->currentX, scanline);
+            paint->drawLine((int)currX, scanline, (int)e->currentX, scanline);
         }
 
         // Increments all current X
