@@ -188,10 +188,14 @@ void DrawingArea::scanlineFill(QPainter *paint){
 
             // Second point
             it = std::next(it);
+
+            // Just in case an odd number of vertices are in the AET (discretion problem).
+            if (it == AET.end())
+                break;
+
             e = *it;
 
             paint->drawLine(currX, scanline, (int)e->currentX, scanline);
-            currX = round(e->currentX);
         }
 
         // Increments all current X
