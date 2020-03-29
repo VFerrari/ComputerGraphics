@@ -140,7 +140,6 @@ void DrawingArea::scanlineFill(QPainter *paint){
 
     edge* e;
     int scanline, maxY, currX;
-    int size;
 
     // Building edges
     ET = createEdges();
