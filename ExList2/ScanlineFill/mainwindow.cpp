@@ -16,12 +16,16 @@ MainWindow::~MainWindow(){
 void MainWindow::on_drawPushButton_clicked(){
     ui->drawingAreaWidget->setMode('d');
     ui->drawingAreaWidget->repaint();
-    ui->fillPushButton->setEnabled(true);
+    changeFill(true);
 }
 
 void MainWindow::on_fillPushButton_clicked(){
     ui->drawingAreaWidget->setMode('f');
     ui->drawingAreaWidget->update();
+}
+
+void MainWindow::changeFill(bool state){
+    ui->fillPushButton->setEnabled(state);
 }
 
 void MainWindow::on_colorToolButton_clicked(){
@@ -34,5 +38,5 @@ void MainWindow::on_colorToolButton_clicked(){
 void MainWindow::on_clearPushButton_clicked(){
     ui->drawingAreaWidget->clear();
     ui->drawingAreaWidget->update();
-    ui->fillPushButton->setEnabled(false);
+    changeFill(false);
 }

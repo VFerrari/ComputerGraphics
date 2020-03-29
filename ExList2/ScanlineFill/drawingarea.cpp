@@ -1,16 +1,14 @@
 #include "drawingarea.h"
 #include "ui_drawingarea.h"
-#include <QPalette>
-#include <QMouseEvent>
 
 DrawingArea::DrawingArea(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DrawingArea)
 {
     qPointsT qPoints;
+    QPalette pal = palette();
 
     ui->setupUi(this);
-    QPalette pal = palette();
 
     this->qPoints = qPoints;
     this->mode = 'p';
@@ -25,6 +23,23 @@ DrawingArea::DrawingArea(QWidget *parent) :
 
 DrawingArea::~DrawingArea(){
     delete ui;
+}
+
+void DrawingArea::setMode(char mode){
+    this->mode=mode;
+}
+
+void DrawingArea::setColor(QColor color){
+    this->color = color;
+}
+
+void DrawingArea::mousePressEvent(QMouseEvent *event){
+    qPoints.push_back(event->pos());
+    this->mode='p';
+    this->update();
+
+    // Disable fill button.
+    ((MainWindow*)(parent()->parent()))->changeFill(false);
 }
 
 /*
@@ -60,8 +75,8 @@ void DrawingArea::paintEvent(QPaintEvent *){
     }
 }
 
-std::priority_queue<edge*, std::vector<edge*>,compare> DrawingArea::createEdges(){
-    std::priority_queue<edge*, std::vector<edge*>,compare> edges;
+std::priority_queue<edge*, std::vector<edge*>,compareMinY> DrawingArea::createEdges(){
+    std::priority_queue<edge*, std::vector<edge*>,compareMinY> edges;
     edge *e;
     int y0, y1, x0, x1;
 
@@ -130,7 +145,7 @@ bool compare_AET_X (edge* i, edge* j){
 
 // Filling the polygon using the Scanline Fill Algorithm
 void DrawingArea::scanlineFill(QPainter *paint){
-    std::priority_queue<edge*, std::vector<edge*>,compare> ET;
+    std::priority_queue<edge*, std::vector<edge*>,compareMinY> ET;
     std::forward_list<edge*> AET;
 
     edge* e;
@@ -201,20 +216,6 @@ void DrawingArea::scanlineFill(QPainter *paint){
         // Next scan line.
         scanline++;
     } while(scanline != maxY);
-}
-
-void DrawingArea::mousePressEvent(QMouseEvent *event){
-    qPoints.push_back(event->pos());
-    this->mode='p';
-    this->update();
-}
-
-void DrawingArea::setMode(char mode){
-    this->mode=mode;
-}
-
-void DrawingArea::setColor(QColor color){
-    this->color = color;
 }
 
 void DrawingArea::clear(){

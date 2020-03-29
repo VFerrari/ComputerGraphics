@@ -16,6 +16,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void changeFill(bool state);
+
 private slots:
     void on_drawPushButton_clicked();
 
@@ -24,7 +26,6 @@ private slots:
     void on_colorToolButton_clicked();
 
     void on_clearPushButton_clicked();
-
 private:
     Ui::MainWindow *ui;
 };
