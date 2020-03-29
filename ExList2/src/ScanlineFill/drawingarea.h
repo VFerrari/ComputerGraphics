@@ -60,7 +60,7 @@ private:
     QColor color;
     char mode;
 
-    std::priority_queue<edge*, std::vector<edge*>,compareMinY> createEdges();
+    auto createEdges();
     void scanlineFill(QPainter *paint);
     void mousePressEvent(QMouseEvent *event);
 protected:

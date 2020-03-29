@@ -1,3 +1,18 @@
+/*
+ * MC937 - Computer Graphics
+ * Exercise List 2 - Exercise 2: Scanline Fill Algorithm.
+ *
+ * Qt application to draw a polygon and fill using the Scanline Fill Algorithm.
+ *
+ * DrawingArea: Main area for drawing.
+ * Has the implementation of the Scanline Fill Algorithm and other painting functions.
+ *
+ * Author:
+ *      Victor Ferreira Ferrari - RA 187890
+ *
+ * Last Modified: 29/03/2020
+ */
+
 #include "drawingarea.h"
 #include "ui_drawingarea.h"
 
@@ -33,6 +48,11 @@ void DrawingArea::setColor(QColor color){
     this->color = color;
 }
 
+/**
+ * Handles mouse presses in the drawing area.
+ * @brief DrawingArea::mousePressEvent
+ * @param event The mouse press properties (position, etc).
+ */
 void DrawingArea::mousePressEvent(QMouseEvent *event){
     qPoints.push_back(event->pos());
     this->mode='p';
@@ -75,7 +95,13 @@ void DrawingArea::paintEvent(QPaintEvent *){
     }
 }
 
-std::priority_queue<edge*, std::vector<edge*>,compareMinY> DrawingArea::createEdges(){
+/**
+ * Creates the edge structures for each edge, and inserts into a priority queue.
+ * Priority queue takes the form of a min heap.
+ * xIncr: line slope.
+ * @brief DrawingArea::createEdges
+ */
+auto DrawingArea::createEdges(){
     std::priority_queue<edge*, std::vector<edge*>,compareMinY> edges;
     edge *e;
     int y0, y1, x0, x1;
@@ -142,8 +168,11 @@ bool compare_AET_X (edge* i, edge* j){
     return i->currentX < j->currentX;
 }
 
-
-// Filling the polygon using the Scanline Fill Algorithm
+/**
+ * Filling the polygon using the Scanline Fill Algorithm
+ * @brief DrawingArea::scanlineFill
+ * @param paint: painter for DrawingArea.
+ */
 void DrawingArea::scanlineFill(QPainter *paint){
     std::priority_queue<edge*, std::vector<edge*>,compareMinY> ET;
     std::forward_list<edge*> AET;
@@ -218,6 +247,10 @@ void DrawingArea::scanlineFill(QPainter *paint){
     } while(scanline != maxY);
 }
 
+/**
+ * Resets drawing area, clearing points and resetting pen color.
+ * @brief DrawingArea::clear
+ */
 void DrawingArea::clear(){
     qPoints.clear();
     this->color = Qt::black;
