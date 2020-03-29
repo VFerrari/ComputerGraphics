@@ -49,12 +49,56 @@ void DrawingArea::setColor(QColor color){
 }
 
 /**
+ * Finds closest point to the reference point.
+ * Calculates the distance between the reference and all points.
+ * @brief DrawingArea::closestPoint
+ * @param ref: point of reference to distance.
+ * @return index of the closest point.
+ */
+int DrawingArea::closestPoint(QPoint ref){
+    QPoint diff;
+    double dist, minDist = 1000000;
+    int index;
+
+    // Calculates distance.
+    for (int i = 0; i < (int)qPoints.size(); ++i){
+        diff = ref - qPoints[i];
+        dist = sqrt(diff.x()*diff.x() + diff.y()*diff.y());
+
+        // Updates minimum distance/closest point.
+        if(dist < minDist){
+            minDist = dist;
+            index = i;
+        }
+    }
+
+    return index;
+}
+
+/**
  * Handles mouse presses in the drawing area.
+ * Left button: NEW vertex to polygon.
+ * Right button: modify polygon, position of the closest point.
  * @brief DrawingArea::mousePressEvent
  * @param event The mouse press properties (position, etc).
  */
 void DrawingArea::mousePressEvent(QMouseEvent *event){
-    qPoints.push_back(event->pos());
+    int index;
+
+    // If right button, we find the closest point and modifies its position.
+    if(event->button() == Qt::RightButton){
+        if(qPoints.empty())
+            return;
+
+        index = closestPoint(event->pos());
+        qPoints[index].setX(event->pos().x());
+        qPoints[index].setY(event->pos().y());
+    }
+
+    // If left button, new vertex.
+    else
+        qPoints.push_back(event->pos());
+
     this->mode='p';
     this->update();
 

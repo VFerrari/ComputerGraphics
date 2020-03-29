@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.1, 2020-03-22T21:49:49. -->
+<!-- Written by QtCreator 4.11.1, 2020-03-29T17:55:22. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -285,8 +285,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/victor/MC/937/ExList2/ScanlineFill/ScanlineFill.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/victor/MC/937/ExList2/ScanlineFill/ScanlineFill.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">ScanlineFill2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/victor/MC/937/ExList2/src/ScanlineFill/ScanlineFill.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/victor/MC/937/ExList2/src/ScanlineFill/ScanlineFill.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>

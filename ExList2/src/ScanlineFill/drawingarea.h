@@ -63,6 +63,7 @@ private:
     auto createEdges();
     void scanlineFill(QPainter *paint);
     void mousePressEvent(QMouseEvent *event);
+    int closestPoint(QPoint ref);
 protected:
     void paintEvent(QPaintEvent *event);
 };
