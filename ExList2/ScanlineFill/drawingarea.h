@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <queue>
 #include <forward_list>
+#include <math.h>
 
 struct edge {
              int maxY, minY;

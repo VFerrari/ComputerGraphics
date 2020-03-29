@@ -81,18 +81,18 @@ std::priority_queue<edge*, std::vector<edge*>,compare> DrawingArea::createEdges(
         e->maxY = std::max(y0, y1);
 
         // Slope
-        if(x0 == x1)
+        if(y0 == y1)
             e->xIncr = 0;
         else
-            e->xIncr = (x1-x0)/(y1-y0);
+            e->xIncr = (x1-x0)/(double)(y1-y0);
 
         // Other values.
         if(e->maxY == y0){
-            e->currentX = x0;
+            e->currentX = x1;
             e->minY = y1;
         }
         else{
-            e->currentX = x1;
+            e->currentX = x0;
             e->minY = y0;
         }
 
@@ -109,18 +109,18 @@ std::priority_queue<edge*, std::vector<edge*>,compare> DrawingArea::createEdges(
     e->maxY = std::max(y0, y1);
 
     // Slope.
-    if(x0 == x1)
+    if(y0 == y1)
         e->xIncr = 0;
     else
-        e->xIncr = (x1-x0)/(y1-y0);
+        e->xIncr = (x1-x0)/(double)(y1-y0);
 
     // Other values.
     if(e->maxY == y0){
-        e->currentX = x0;
+        e->currentX = x1;
         e->minY = y1;
     }
     else{
-        e->currentX = x1;
+        e->currentX = x0;
         e->minY = y0;
     }
 
@@ -184,13 +184,14 @@ void DrawingArea::scanlineFill(QPainter *paint){
 
             // First point.
             e = *it;
-            currX = e->currentX;
+            currX = round(e->currentX);
 
             // Second point
             it = std::next(it);
             e = *it;
 
-            paint->drawLine((int)currX, scanline, (int)e->currentX, scanline);
+            paint->drawLine(currX, scanline, (int)e->currentX, scanline);
+            currX = round(e->currentX);
         }
 
         // Increments all current X
