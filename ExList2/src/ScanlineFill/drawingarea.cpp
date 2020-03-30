@@ -10,7 +10,7 @@
  * Author:
  *      Victor Ferreira Ferrari - RA 187890
  *
- * Last Modified: 29/03/2020
+ * Last Modified: 30/03/2020
  */
 
 #include "drawingarea.h"
@@ -160,7 +160,7 @@ auto DrawingArea::createEdges(){
         e = new edge;
         e->maxY = std::max(y0, y1);
 
-        // Slope
+        // X Step.
         if(y0 == y1)
             e->xIncr = 0;
         else
@@ -188,7 +188,7 @@ auto DrawingArea::createEdges(){
     e = new edge;
     e->maxY = std::max(y0, y1);
 
-    // Slope.
+    // X Step.
     if(y0 == y1)
         e->xIncr = 0;
     else
@@ -242,10 +242,10 @@ void DrawingArea::scanlineFill(QPainter *paint){
 
         // Delete finished edges.
         for(auto it = AET.before_begin(); it != AET.end(); ++it){
-            if(std::next(it) != AET.end()){
-                if((*std::next(it))->maxY == scanline){
-                    AET.erase_after(it);
-                }
+            while(std::next(it) != AET.end() &&
+                 (*std::next(it))->maxY == scanline)
+            {
+                AET.erase_after(it);
             }
         }
 
@@ -262,22 +262,17 @@ void DrawingArea::scanlineFill(QPainter *paint){
         // Sort AET by X
         AET.sort(compare_AET_X);
 
-        // Fills line between pairs of X.
+        // Fills line between pairs of X. Size of AET is always even.
         for(auto it = AET.begin(); it != AET.end(); ++it){
-
             // First point.
             e = *it;
             currX = round(e->currentX);
 
             // Second point
             it = std::next(it);
-
-            // Just in case an odd number of vertices are in the AET (discretion problem).
-            if (it == AET.end())
-                break;
-
             e = *it;
 
+            // Round first point, truncate second.
             paint->drawLine(currX, scanline, (int)e->currentX, scanline);
         }
 
