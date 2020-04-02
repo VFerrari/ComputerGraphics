@@ -161,8 +161,10 @@ auto DrawingArea::createEdges(){
         e->maxY = std::max(y0, y1);
 
         // X Step.
-        if(y0 == y1)
-            e->xIncr = 0;
+        if(y0 == y1){
+            delete(e);
+            continue;
+        }
         else
             e->xIncr = (x1-x0)/(double)(y1-y0);
 
@@ -189,8 +191,10 @@ auto DrawingArea::createEdges(){
     e->maxY = std::max(y0, y1);
 
     // X Step.
-    if(y0 == y1)
-        e->xIncr = 0;
+    if(y0 == y1){
+        delete(e);
+        return edges;
+    }
     else
         e->xIncr = (x1-x0)/(double)(y1-y0);
 
@@ -245,7 +249,9 @@ void DrawingArea::scanlineFill(QPainter *paint){
             while(std::next(it) != AET.end() &&
                  (*std::next(it))->maxY == scanline)
             {
+                e = *std::next(it);
                 AET.erase_after(it);
+                delete(e);
             }
         }
 
