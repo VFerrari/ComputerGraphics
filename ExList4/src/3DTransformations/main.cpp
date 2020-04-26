@@ -75,7 +75,7 @@ int main(){
 	
 	// Set key callback
 	glfwSetWindowUserPointer(window, scene);
-	glfwSetKeyCallback(window, scene->executeAction);
+	glfwSetKeyCallback(window, scene->handleInput);
 
 	// Colors (TEMP)
 	float colors[SHAPES][3] = { {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f} };

@@ -10,6 +10,7 @@ public:
     
     // Get/Set
     glm::mat4 getCamera(void);
+    bool getCameraMode(void);
     uint8_t getShape(uint8_t index, std::vector<float> *dest);
     void setCameraMode(void);
     void setAllShapes(void);
@@ -18,7 +19,7 @@ public:
     void bufferShape(GLuint *vbo, GLuint *vao, uint8_t shape, std::vector<float> *points);
     
     // Input handler
-    static void executeAction(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods);
     
 private:
     void createFigures(void);

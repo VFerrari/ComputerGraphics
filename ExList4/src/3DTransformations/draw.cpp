@@ -93,6 +93,10 @@ glm::mat4 Scene::getCamera(void){
 	return camera_pos;
 }
 
+bool Scene::getCameraMode(void){
+	return camera_mode;
+}
+
 void Scene::setCameraMode(void){
 	camera_mode = !camera_mode;
 }
@@ -133,7 +137,7 @@ void Scene::bufferShape(GLuint *vbo, GLuint *vao, uint8_t shape, std::vector<flo
 }
 
 
-void Scene::executeAction(GLFWwindow* window, int key, int scancode, int action, int mods){
+void Scene::handleInput(GLFWwindow* window, int key, int scancode, int action, int mods){
 	Scene *scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
 	
 	// Key pressed
@@ -151,6 +155,38 @@ void Scene::executeAction(GLFWwindow* window, int key, int scancode, int action,
 				printf("Camera\n");
 				break;
 			
+			// up: move camera up or translate shape up
+			case GLFW_KEY_UP:
+				if(scene->getCameraMode())
+					printf("Move camera up\n");
+				else
+					printf("Move shape up\n");
+				break;
+			
+			// down: move camera down or translate shape down
+			case GLFW_KEY_DOWN:
+				if(scene->getCameraMode())
+					printf("Move camera down\n");
+				else
+					printf("Move shape down\n");
+				break;
+			
+			// left: move camera left or translate shape left
+			case GLFW_KEY_LEFT:
+				if(scene->getCameraMode())
+					printf("Move camera left\n");
+				else
+					printf("Move shape left\n");
+				break;
+				
+			// right: move camera right or translate shape right
+			case GLFW_KEY_RIGHT:
+				if(scene->getCameraMode())
+					printf("Move camera right\n");
+				else
+					printf("Move shape right\n");
+				break;
+			
 			// 1-9: select shape 1-9.
 			case GLFW_KEY_1:
 			case GLFW_KEY_2:
@@ -164,12 +200,62 @@ void Scene::executeAction(GLFWwindow* window, int key, int scancode, int action,
 				scene->setCurrentShape(scancode-9);
 				printf("%d\n", scancode-9);
 				break;
-
+			
+			// 0: select all shapes
 			case GLFW_KEY_0:
 				scene->setAllShapes();
 				printf("%d\n", scancode-10);
 				break;
 			
+			// x: scale down or up in X
+			case GLFW_KEY_X:
+				if(mods & GLFW_MOD_SHIFT)
+					printf("Scale up X\n");
+				else
+					printf("Scale down X\n");
+				break;
+			
+			// y: scale down or up in Y
+			case GLFW_KEY_Y:
+				if(mods & GLFW_MOD_SHIFT)
+					printf("Scale up Y\n");
+				else
+					printf("Scale down Y\n");
+				break;
+				
+			// z: scale down or up in Z
+			case GLFW_KEY_Z:
+				if(mods & GLFW_MOD_SHIFT)
+					printf("Scale up Z\n");
+				else
+					printf("Scale down Z\n");
+				break;
+			
+			// s: rotate through X
+			case GLFW_KEY_S:
+				printf("Rotate x-axis\n");
+				break;
+			
+			// q: rotate through Y
+			case GLFW_KEY_Q:
+				printf("Rotate y-axis\n");
+				break;
+				
+			// a: rotate through Z
+			case GLFW_KEY_A:
+				printf("Rotate z-axis\n");
+				break;
+				
+			// ,: move the shape forward
+			case GLFW_KEY_COMMA:
+				printf("Move forward\n");
+				break;
+			
+			// .: move the shape backward
+			case GLFW_KEY_PERIOD:
+				printf("Move backward\n");
+				break;
+					
 			default:
 				break;
 		}
