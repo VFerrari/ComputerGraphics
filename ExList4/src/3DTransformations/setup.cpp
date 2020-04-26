@@ -15,6 +15,12 @@ GLFWwindow* mainSetup(uint16_t width, uint16_t height, const char* name){
         return nullptr;
     }
 
+	// Window hints.
+    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     glfwMakeContextCurrent(window);
 
     if (!initGLEW())
@@ -60,39 +66,4 @@ void configGL(GLFWwindow* window){
 
     // Background far away.
     glClearDepth(1.0f);
-}
-
-/**
- * Creating shaders and linking.
- * @brief createShaders
- */
-void createShaders(void){
-
-    const char* vertex_shader =
-            "#version 400\n"
-            "in vec3 vp;"
-            "void main() {"
-            "  gl_Position = vec4(vp, 1.0);"
-            "}";
-
-    const char* fragment_shader =
-            "#version 400\n"
-            "out vec4 frag_colour;"
-            "void main() {"
-            "  frag_colour = vec4(0.5, 0.0, 0.0, 1.0);"
-            "}";
-
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER); //GL_VERTEX_SHADER is a shader that is intended to run on the programmable vertex processor.
-    glShaderSource(vs, 1, &vertex_shader, nullptr); //Replaces the source code in a shader object
-    glCompileShader(vs); //Compiles a shader object
-
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER); //GL_FRAGMENT_SHADER is a shader that is intended to run on the programmable fragment processor.
-    glShaderSource(fs, 1, &fragment_shader, nullptr); // Replaces the source code in a shader object
-    glCompileShader(fs);
-
-    GLuint shader_program = glCreateProgram();//Creates a program object, A program object is an object to which shader objects can be attached.
-    glAttachShader(shader_program, fs); // Attaches a shader object to a program object
-    glAttachShader(shader_program, vs);
-    glLinkProgram(shader_program);
-    glUseProgram(shader_program); //Installs a program object as part of current rendering state
 }
