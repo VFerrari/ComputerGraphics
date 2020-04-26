@@ -4,16 +4,29 @@ Shaders::Shaders(void){
 
     const char* vertex_shader =
             "#version 400\n"
-            "in vec3 vp;"
+            "layout (location=0) in vec3 position;"
+            "layout (location=1) in vec3 normal;"
+            "out vec3 vColor;"
+            "out vec3 vNormal;"
+            "uniform mat4 MVP;"
             "void main() {"
-            "  gl_Position = vec4(vp, 1.0);"
+            " gl_Position = MVP*vec4(position, 5.0f);"
+            //" vColor = vec3(1,1,0);"
+            " vNormal = normal;"
             "}";
 
     const char* fragment_shader =
             "#version 400\n"
-            "out vec4 frag_colour;"
+            "uniform vec3 vColor;"
+            //"in vec3 vColor;"
+            "in vec3 vNormal;"
+            "out vec4 fColor;"
             "void main() {"
-            "  frag_colour = vec4(0.5, 0.0, 0.0, 1.0);"
+            "   vec3 lightColor = vec3(0.5f, 0.5f, 0.5f);"
+            "   vec3 norm = normalize(vNormal);"
+            "   float cos = dot(norm, lightColor);"
+            "   cos = clamp(cos, 0.0, 1.0);"
+            "   fColor = vec4(vColor * cos, 1.0f);"
             "}";
 
     //GL_VERTEX_SHADER: shader that is intended to run on the programmable vertex processor.
@@ -32,7 +45,6 @@ Shaders::Shaders(void){
     // Attaches a shader object to a program object
     glAttachShader(shader_program, fs);
     glAttachShader(shader_program, vs);
-    glBindFragDataLocation(shader_program, 0, "outColor");
     glLinkProgram(shader_program);
 
     //Installs a program object as part of current rendering state

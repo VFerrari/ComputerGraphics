@@ -7,12 +7,22 @@ Scene::Scene(void){
 
 void Scene::createFigures(void){
     // Pyramid
-    shapes[0] = { // 5 vertices of the pyramid in (x,y,z)
-          -1.0f, -1.0f, -1.0f,  // 0. left-bottom-back
-           1.0f, -1.0f, -1.0f,  // 1. right-bottom-back
-           1.0f, -1.0f,  1.0f,  // 2. right-bottom-front
-          -1.0f, -1.0f,  1.0f,  // 3. left-bottom-front
-           0.0f,  1.0f,  0.0f   // 4. top
+    shapes[0] = {
+        -5.0f, 5.0f,  0.0f, 1.f, 0.f, 0.f,
+        -5.0f, 3.0f,  1.0f, 1.f, 0.f, 0.f,
+        -4.0f, 3.0f,  1.0f, 1.f, 1.f, 0.f,
+
+        -5.0f, 5.0f,  0.0f, 1.f, 0.f, 0.f,
+        -4.0f, 3.0f,  1.0f, 1.f, 0.f, 0.f,
+        -4.0f, 3.0f, -1.0f, 1.f, 0.f, 1.f,
+
+        -5.0f, 5.0f,  0.0f, 1.f, 0.f, 0.f,
+        -4.0f, 3.0f, -1.0f, 1.f, 1.f, 0.f,
+        -6.0f, 3.0f, -1.0f, 1.f, 0.f, 0.f,
+
+        -5.0f, 5.0f,  0.0f, 1.f, 0.f, 0.f,
+        -6.0f, 3.0f, -1.0f, 1.f, 0.f, 0.f,
+        -6.0f, 3.0f,  1.0f, 1.f, 1.f, 0.f,
     };
 
     // Cube
