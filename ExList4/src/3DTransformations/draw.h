@@ -46,6 +46,8 @@ private:
     // Draw
     void drawPyramid(float width, float height, float depth, float start_x, float start_y, float start_z);
     void drawParallelepiped(float width, float height, float depth, float start_x, float start_y, float start_z);
+    void drawHourglass(float width, float height, float depth, float start_x, float start_y, float start_z);
+    void drawIcosahedron(float radius);
 
     // Center
     void findCenter(uint8_t shape);

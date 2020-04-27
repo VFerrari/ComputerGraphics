@@ -10,6 +10,6 @@
 #include <cstdint>
 #include <cstdlib>
 
-#define SHAPES 7
+#define SHAPES 8
 
 #endif // GLOBAL_H

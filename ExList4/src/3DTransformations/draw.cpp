@@ -39,8 +39,16 @@ void Scene::createFigures(void){
     
     // Parallelepiped (wide)
     curr_shape++;
-    drawParallelepiped(4.f, 2.f, 1.f, -8.f, -7.f, -0.5f);
+    drawParallelepiped(4.f, 2.f, 1.f, -8.f, -7.f, -6.f);
     findCenter(curr_shape);
+    
+    // Hourglass
+    curr_shape++;
+    drawHourglass(2.f, 4.f, 2.f, 3.f, -5.f, 0.f);
+    findCenter(curr_shape);
+    
+    // D20 (icosahedron)
+    curr_shape++;
     
     curr_shape = 0;
 }
@@ -205,6 +213,78 @@ void Scene::drawParallelepiped(float width, float height, float depth, float sta
         start_x+width, start_y+height, start_z+depth, colors[3][0], colors[3][1], colors[3][2], // Close face
         start_x,       start_y+height, start_z+depth, colors[3][0], colors[3][1], colors[3][2],
         start_x+width, start_y       , start_z+depth, colors[3][0], colors[3][1], colors[3][2]
+    };
+}
+
+/**
+ * Draws a hourglass in the current shape, given info on it.
+ * Two pyramids connected by their peaks.
+ * @param start_x : leftmost X value
+ * @param start_y : bottom y value
+ * @param start_z : farthest z value
+ */
+void Scene::drawHourglass(float width, float height, float depth, float start_x, float start_y, float start_z){
+    std::vector<float> colors[10];
+    float middle_x = start_x + width/2;
+    float middle_z = start_z + depth/2;
+    float middle_y = start_y + height/2;
+    
+    // Generate colors
+    for(int i=0; i<10; i++)
+        colors[i] = {getRandomColor(), getRandomColor(), getRandomColor()};
+
+    shapes[curr_shape] = {
+        // Base of the top pyramid
+        start_x,       start_y+height, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        start_x,       start_y+height, start_z,       colors[0][0], colors[0][1], colors[0][2],
+        start_x+width, start_y+height, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+
+        start_x+width, start_y+height, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        start_x+width, start_y+height, start_z,       colors[0][0], colors[0][1], colors[0][2],
+        start_x,       start_y+height, start_z,       colors[0][0], colors[0][1], colors[0][2],
+
+        // Faces of the top pyramid.
+        start_x,       start_y+height, start_z+depth, colors[2][0], colors[2][1], colors[2][2],
+        start_x+width, start_y+height, start_z+depth, colors[2][0], colors[2][1], colors[2][2],
+        middle_x,      middle_y,       middle_z,      colors[2][0], colors[2][1], colors[2][2],
+        
+        start_x+width, start_y+height, start_z+depth, colors[3][0], colors[3][1], colors[3][2],
+        start_x+width, start_y+height, start_z,       colors[3][0], colors[3][1], colors[3][2],
+        middle_x,      middle_y,       middle_z,      colors[3][0], colors[3][1], colors[3][2],
+
+        start_x,       start_y+height, start_z,       colors[4][0], colors[4][1], colors[4][2],
+        start_x+width, start_y+height, start_z,       colors[4][0], colors[4][1], colors[4][2],
+        middle_x,      middle_y,       middle_z,      colors[4][0], colors[4][1], colors[4][2],        
+        
+        start_x,       start_y+height, start_z,       colors[5][0], colors[5][1], colors[5][2],
+        start_x,       start_y+height, start_z+depth, colors[5][0], colors[5][1], colors[5][2],
+        middle_x,      middle_y,       middle_z,      colors[5][0], colors[5][1], colors[5][2],
+        
+        // Faces of the bottom pyramid.
+        middle_x,      middle_y,middle_z,      colors[6][0], colors[6][1], colors[6][2],
+        start_x,       start_y, start_z+depth, colors[6][0], colors[6][1], colors[6][2],
+        start_x+width, start_y, start_z+depth, colors[6][0], colors[6][1], colors[6][2],
+        
+        middle_x,      middle_y,middle_z,      colors[7][0], colors[7][1], colors[7][2],
+        start_x+width, start_y, start_z+depth, colors[7][0], colors[7][1], colors[7][2],
+        start_x+width, start_y, start_z,       colors[7][0], colors[7][1], colors[7][2],
+
+        middle_x,      middle_y,middle_z,      colors[8][0], colors[8][1], colors[8][2],
+        start_x,       start_y, start_z,       colors[8][0], colors[8][1], colors[8][2],
+        start_x+width, start_y, start_z,       colors[8][0], colors[8][1], colors[8][2],
+        
+        middle_x,      middle_y,middle_z,      colors[9][0], colors[9][1], colors[9][2],
+        start_x,       start_y, start_z,       colors[9][0], colors[9][1], colors[9][2],
+        start_x,       start_y, start_z+depth, colors[9][0], colors[9][1], colors[9][2],
+        
+        // Base of the bottom pyramid
+        start_x,       start_y, start_z+depth, colors[1][0], colors[1][1], colors[1][2],
+        start_x,       start_y, start_z,       colors[1][0], colors[1][1], colors[1][2],
+        start_x+width, start_y, start_z+depth, colors[1][0], colors[1][1], colors[1][2],
+
+        start_x+width, start_y, start_z+depth, colors[1][0], colors[1][1], colors[1][2],
+        start_x+width, start_y, start_z,       colors[1][0], colors[1][1], colors[1][2],
+        start_x,       start_y, start_z,       colors[1][0], colors[1][1], colors[1][2]
     };
 }
 
