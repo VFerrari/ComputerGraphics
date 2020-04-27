@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <cstdint>
+#include <cstdlib>
 
 #define SHAPES 3
 

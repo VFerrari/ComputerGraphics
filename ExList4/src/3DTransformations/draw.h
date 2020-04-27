@@ -24,7 +24,7 @@ public:
   
     // Camera
     void moveCamera(float factorX, float factorY);
-    
+        
     // Buffer
     void bufferShape(uint8_t shape);
     
@@ -43,6 +43,10 @@ private:
     void translateOneShape(float factorX, float factorY, float factorZ, uint8_t shape);
     void rotateOneShape(int angle, uint8_t axis, uint8_t shape);
     
+    // Draw
+    void drawPyramid(float width, float height, float depth, float start_x, float start_y, float start_z);
+    void drawParallelepiped(float width, float height, float depth, float start_x, float start_y, float start_z);
+
     // Center
     void findCenter(uint8_t shape);
 

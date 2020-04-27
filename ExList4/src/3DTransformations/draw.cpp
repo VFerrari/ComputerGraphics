@@ -9,138 +9,20 @@ Scene::Scene(uint16_t width, uint16_t height, GLuint *vbo, GLuint *vao){
 
 void Scene::createFigures(void){
     // Pyramid
-    shapes[0] = {
-        // Faces
-        -5.0f, 5.0f,  0.0f, 0.36f, 0.34f, 0.81f,
-        -6.0f, 3.0f,  1.0f, 0.36f, 0.34f, 0.81f,
-        -4.0f, 3.0f,  1.0f, 0.36f, 0.34f, 0.81f,
-
-        -5.0f, 5.0f,  0.0f, 0.47f, 0.84f, 0.02f,
-        -4.0f, 3.0f,  1.0f, 0.47f, 0.84f, 0.02f,
-        -4.0f, 3.0f, -1.0f, 0.47f, 0.84f, 0.02f,
-
-        -5.0f, 5.0f,  0.0f, 0.57f, 0.31f, 0.98f,
-        -4.0f, 3.0f, -1.0f, 0.57f, 0.31f, 0.98f,
-        -6.0f, 3.0f, -1.0f, 0.57f, 0.31f, 0.98f,
-
-        -5.0f, 5.0f,  0.0f, 0.86f, 0.25f, 0.07f,
-        -6.0f, 3.0f, -1.0f, 0.86f, 0.25f, 0.07f,
-        -6.0f, 3.0f,  1.0f, 0.86f, 0.25f, 0.07f,
-        
-        // Base
-        -6.0f, 3.0f,  1.0f, 0.81f, 0.59f, 0.83f,
-        -6.0f, 3.0f, -1.0f, 0.81f, 0.59f, 0.83f,
-        -4.0f, 3.0f,  1.0f, 0.81f, 0.59f, 0.83f,
-        
-        -4.0f, 3.0f,  1.0f, 0.81f, 0.59f, 0.83f,
-        -4.0f, 3.0f, -1.0f, 0.81f, 0.59f, 0.83f,
-        -6.0f, 3.0f, -1.0f, 0.81f, 0.59f, 0.83f
-    };
+    drawPyramid(2.f, 2.f, 2.f, -6.f, 3.f, -1.f);
     findCenter(0);
 
     // Cube
-    shapes[1] =  {
-        -1.0f,-1.0f,-1.0f, 0.72f, 0.71f, 0.68f, // Left face
-        -1.0f,-1.0f, 1.0f, 0.72f, 0.71f, 0.68f,
-        -1.0f, 1.0f, 1.0f, 0.72f, 0.71f, 0.68f,
-        
-         1.0f, 1.0f,-1.0f, 0.25f, 0.92f, 0.67f, // Far Face
-        -1.0f,-1.0f,-1.0f, 0.25f, 0.92f, 0.67f,
-        -1.0f, 1.0f,-1.0f, 0.25f, 0.92f, 0.67f,
-        
-         1.0f,-1.0f, 1.0f, 0.84f, 0.38f, 0.63f, // Lower Face
-        -1.0f,-1.0f,-1.0f, 0.84f, 0.38f, 0.63f,
-         1.0f,-1.0f,-1.0f, 0.84f, 0.38f, 0.63f,
-
-         1.0f, 1.0f,-1.0f, 0.25f, 0.92f, 0.67f, // Far Face
-         1.0f,-1.0f,-1.0f, 0.25f, 0.92f, 0.67f,
-        -1.0f,-1.0f,-1.0f, 0.25f, 0.92f, 0.67f,
-        
-        -1.0f,-1.0f,-1.0f, 0.72f, 0.71f, 0.68f, // Left Face
-        -1.0f, 1.0f, 1.0f, 0.72f, 0.71f, 0.68f,
-        -1.0f, 1.0f,-1.0f, 0.72f, 0.71f, 0.68f,
-        
-         1.0f,-1.0f, 1.0f, 0.84f, 0.38f, 0.63f, // Lower Face
-        -1.0f,-1.0f, 1.0f, 0.84f, 0.38f, 0.63f,
-        -1.0f,-1.0f,-1.0f, 0.84f, 0.38f, 0.63f,
-        
-        -1.0f, 1.0f, 1.0f, 0.15f, 0.54f, 0.99f, // Close face
-        -1.0f,-1.0f, 1.0f, 0.15f, 0.54f, 0.99f,
-         1.0f,-1.0f, 1.0f, 0.15f, 0.54f, 0.99f,
-
-         1.0f, 1.0f, 1.0f, 0.54f, 0.84f, 0.09f, // Right Face
-         1.0f,-1.0f,-1.0f, 0.54f, 0.84f, 0.09f,
-         1.0f, 1.0f,-1.0f, 0.54f, 0.84f, 0.09f,
-
-         1.0f,-1.0f,-1.0f, 0.54f, 0.84f, 0.09f, // Right Face
-         1.0f, 1.0f, 1.0f, 0.54f, 0.84f, 0.09f,
-         1.0f,-1.0f, 1.0f, 0.54f, 0.84f, 0.09f,         
-
-         1.0f, 1.0f, 1.0f, 0.89f, 0.26f, 0.70f, // Upper Face
-         1.0f, 1.0f,-1.0f, 0.89f, 0.26f, 0.70f,
-        -1.0f, 1.0f,-1.0f, 0.89f, 0.26f, 0.70f,
-
-         1.0f, 1.0f, 1.0f, 0.89f, 0.26f, 0.70f, // Upper Face
-        -1.0f, 1.0f,-1.0f, 0.89f, 0.26f, 0.70f,
-        -1.0f, 1.0f, 1.0f, 0.89f, 0.26f, 0.70f,     
-        
-         1.0f, 1.0f, 1.0f, 0.15f, 0.54f, 0.99f, // Close face
-        -1.0f, 1.0f, 1.0f, 0.15f, 0.54f, 0.99f,
-         1.0f,-1.0f, 1.0f, 0.15f, 0.54f, 0.99f
-    };
+    curr_shape = 1;
+    drawParallelepiped(2.f, 2.f, 2.f, -1.f, -1.f, -1.f);
     findCenter(1);
     
     // Parallelepiped
-    shapes[2] =  {
-        6.5f, -5.0f, -1.0f, 0.39f, 0.21f, 0.35f, // Left face
-        6.5f, -5.0f,  1.0f, 0.39f, 0.21f, 0.35f,
-        6.5f, -2.0f,  1.0f, 0.39f, 0.21f, 0.35f,
-        
-        7.5f, -2.0f, -1.0f, 0.81f, 0.30f, 0.82f, // Far Face
-        6.5f, -5.0f, -1.0f, 0.81f, 0.30f, 0.82f,
-        6.5f, -2.0f, -1.0f, 0.81f, 0.30f, 0.82f,
-        
-        7.5f, -5.0f,  1.0f, 0.01f, 0.91f, 0.83f, // Lower Face
-        6.5f, -5.0f, -1.0f, 0.01f, 0.91f, 0.83f,
-        7.5f, -5.0f, -1.0f, 0.01f, 0.91f, 0.83f,
-
-        7.5f, -2.0f, -1.0f, 0.81f, 0.30f, 0.82f, // Far Face
-        7.5f, -5.0f, -1.0f, 0.81f, 0.30f, 0.82f,
-        6.5f, -5.0f, -1.0f, 0.81f, 0.30f, 0.82f,
-        
-        6.5f, -2.0f, -1.0f, 0.39f, 0.21f, 0.35f, // Left Face
-        6.5f, -2.0f,  1.0f, 0.39f, 0.21f, 0.35f,
-        6.5f, -5.0f, -1.0f, 0.39f, 0.21f, 0.35f,
-        
-        7.5f, -5.0f,  1.0f, 0.01f, 0.91f, 0.83f, // Lower Face
-        6.5f, -5.0f,  1.0f, 0.01f, 0.91f, 0.83f,
-        6.5f, -5.0f, -1.0f, 0.01f, 0.91f, 0.83f,
-        
-        6.5f, -2.0f,  1.0f, 0.35f, 0.18f, 0.81f, // Close face
-        6.5f, -5.0f,  1.0f, 0.35f, 0.18f, 0.81f,
-        7.5f, -5.0f,  1.0f, 0.35f, 0.18f, 0.81f,
-
-        7.5f, -2.0f,  1.0f, 0.69f, 0.85f, 0.46f, // Right Face
-        7.5f, -5.0f, -1.0f, 0.69f, 0.85f, 0.46f,
-        7.5f, -2.0f, -1.0f, 0.69f, 0.85f, 0.46f,
-
-        7.5f, -5.0f, -1.0f, 0.69f, 0.85f, 0.46f, // Right Face
-        7.5f, -2.0f,  1.0f, 0.69f, 0.85f, 0.46f,
-        7.5f, -5.0f,  1.0f, 0.69f, 0.85f, 0.46f,         
-
-        7.5f, -2.0f,  1.0f, 0.73f, 0.98f, 0.03f, // Upper Face
-        7.5f, -2.0f, -1.0f, 0.73f, 0.98f, 0.03f,
-        6.5f, -2.0f, -1.0f, 0.73f, 0.98f, 0.03f,
-
-        7.5f, -2.0f,  1.0f, 0.73f, 0.98f, 0.03f, // Upper Face
-        6.5f, -2.0f, -1.0f, 0.73f, 0.98f, 0.03f,
-        6.5f, -2.0f,  1.0f, 0.73f, 0.98f, 0.03f,     
-        
-        7.5f, -2.0f,  1.0f, 0.35f, 0.18f, 0.81f, // Close face
-        6.5f, -2.0f,  1.0f, 0.35f, 0.18f, 0.81f,
-        7.5f, -5.0f,  1.0f, 0.35f, 0.18f, 0.81f
-    };
+    curr_shape = 2;
+    drawParallelepiped(1.f, 3.f, 2.f, 6.5f, -2.f, -1.f);
     findCenter(2);
+    
+    curr_shape = 0;
 }
 
 void Scene::createCamera(uint16_t width, uint16_t height){
@@ -187,6 +69,123 @@ uint8_t Scene::getShape(uint8_t index, std::vector<float> *dest){
 
 uint8_t Scene::getCurrentShape(){
     return curr_shape;
+}
+
+/**
+ * Random number between 0 and 1. Used for color generation.
+ */
+float getRandomColor(void){
+    return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+}
+
+/**
+ * Draws a pyramid in the current shape, given info on it.
+ * @param start_x : leftmost X value
+ * @param start_y : bottom y value
+ * @param start_z : farthest z value
+ */
+void Scene::drawPyramid(float width, float height, float depth, float start_x, float start_y, float start_z){
+    std::vector<float> colors[5];
+    float peak_x = start_x + width/2;
+    float peak_z = start_z + depth/2;
+    float peak_y = start_y+height;
+    
+    // Generate colors
+    for(int i=0; i<5; i++)
+        colors[i] = {getRandomColor(), getRandomColor(), getRandomColor()};
+    
+    shapes[curr_shape] = {
+        
+        // Faces
+        peak_x,        peak_y,  peak_z,        colors[0][0], colors[0][1], colors[0][2],
+        start_x,       start_y, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        start_x+width, start_y, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        
+        peak_x,        peak_y,  peak_z,        colors[1][0], colors[1][1], colors[1][2],
+        start_x+width, start_y, start_z+depth, colors[1][0], colors[1][1], colors[1][2],
+        start_x+width, start_y, start_z,       colors[1][0], colors[1][1], colors[1][2],
+
+        peak_x,        peak_y,  peak_z,        colors[2][0], colors[2][1], colors[2][2],
+        start_x,       start_y, start_z,       colors[2][0], colors[2][1], colors[2][2],
+        start_x+width, start_y, start_z,       colors[2][0], colors[2][1], colors[2][2],
+        
+        peak_x,        peak_y,  peak_z,        colors[3][0], colors[3][1], colors[3][2],
+        start_x,       start_y, start_z,       colors[3][0], colors[3][1], colors[3][2],
+        start_x,       start_y, start_z+depth, colors[3][0], colors[3][1], colors[3][2],
+        
+        // Base
+        start_x,       start_y, start_z+depth, colors[4][0], colors[4][1], colors[4][2],
+        start_x,       start_y, start_z,       colors[4][0], colors[4][1], colors[4][2],
+        start_x+width, start_y, start_z+depth, colors[4][0], colors[4][1], colors[4][2],
+
+        start_x+width, start_y, start_z+depth, colors[4][0], colors[4][1], colors[4][2],
+        start_x+width, start_y, start_z,       colors[4][0], colors[4][1], colors[4][2],
+        start_x,       start_y, start_z,       colors[4][0], colors[4][1], colors[4][2]
+    };
+}
+
+/**
+ * Draws a parallelepiped in the current shape, given info on it.
+ * @param start_x : leftmost X value
+ * @param start_y : bottom y value
+ * @param start_z : farthest z value
+ */
+void Scene::drawParallelepiped(float width, float height, float depth, float start_x, float start_y, float start_z){
+    std::vector<float> colors[6];
+    
+    // Generate colors
+    for(int i=0; i<6; i++)
+        colors[i] = {getRandomColor(), getRandomColor(), getRandomColor()};
+    
+    shapes[curr_shape] = {
+        start_x,       start_y,        start_z,       colors[0][0], colors[0][1], colors[0][2], // Left face
+        start_x,       start_y,        start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        start_x,       start_y+height, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        
+        start_x+width, start_y+height, start_z,       colors[1][0], colors[1][1], colors[1][2], // Far face
+        start_x,       start_y,        start_z,       colors[1][0], colors[1][1], colors[1][2], 
+        start_x,       start_y+height, start_z,       colors[1][0], colors[1][1], colors[1][2], 
+        
+        start_x+width, start_y       , start_z+depth, colors[2][0], colors[2][1], colors[2][2], // Lower face
+        start_x      , start_y       , start_z,       colors[2][0], colors[2][1], colors[2][2],
+        start_x+width, start_y       , start_z,       colors[2][0], colors[2][1], colors[2][2],
+        
+        start_x+width, start_y+height, start_z,       colors[1][0], colors[1][1], colors[1][2], // Far face
+        start_x+width, start_y       , start_z,       colors[1][0], colors[1][1], colors[1][2], 
+        start_x,       start_y,        start_z,       colors[1][0], colors[1][1], colors[1][2], 
+        
+        start_x,       start_y+height, start_z,       colors[0][0], colors[0][1], colors[0][2], // Left face
+        start_x,       start_y+height, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        start_x,       start_y,        start_z,       colors[0][0], colors[0][1], colors[0][2],
+        
+        start_x+width, start_y       , start_z+depth, colors[2][0], colors[2][1], colors[2][2], // Lower face
+        start_x,       start_y,        start_z+depth, colors[2][0], colors[2][1], colors[2][2],
+        start_x,       start_y,        start_z,       colors[2][0], colors[2][1], colors[2][2],
+        
+        start_x,       start_y+height, start_z+depth, colors[3][0], colors[3][1], colors[3][2], // Close face
+        start_x,       start_y,        start_z+depth, colors[3][0], colors[3][1], colors[3][2],
+        start_x+width, start_y       , start_z+depth, colors[3][0], colors[3][1], colors[3][2],
+        
+        start_x+width, start_y+height, start_z+depth, colors[4][0], colors[4][1], colors[4][2], // Right face
+        start_x+width, start_y       , start_z,       colors[4][0], colors[4][1], colors[4][2],
+        start_x+width, start_y+height, start_z,       colors[4][0], colors[4][1], colors[4][2],
+        
+        start_x+width, start_y       , start_z,       colors[4][0], colors[4][1], colors[4][2], // Right face
+        start_x+width, start_y+height, start_z+depth, colors[4][0], colors[4][1], colors[4][2],
+        start_x+width, start_y       , start_z+depth, colors[4][0], colors[4][1], colors[4][2],
+        
+        start_x+width, start_y+height, start_z+depth, colors[5][0], colors[5][1], colors[5][2], // Upper face
+        start_x+width, start_y+height, start_z,       colors[5][0], colors[5][1], colors[5][2],
+        start_x,       start_y+height, start_z,       colors[5][0], colors[5][1], colors[5][2],
+        
+        start_x+width, start_y+height, start_z+depth, colors[5][0], colors[5][1], colors[5][2], // Upper face
+        start_x,       start_y+height, start_z,       colors[5][0], colors[5][1], colors[5][2],
+        start_x,       start_y+height, start_z+depth, colors[5][0], colors[5][1], colors[5][2],
+        
+        start_x+width, start_y+height, start_z+depth, colors[3][0], colors[3][1], colors[3][2], // Close face
+        start_x,       start_y+height, start_z+depth, colors[3][0], colors[3][1], colors[3][2],
+        start_x+width, start_y       , start_z+depth, colors[3][0], colors[3][1], colors[3][2]
+    };
 }
 
 void Scene::bufferShape(uint8_t shape){

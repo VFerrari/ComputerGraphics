@@ -1,6 +1,7 @@
 #include <memory>
 #include <vector>
 #include <array>
+#include <ctime>
 
 #include "global.h"
 #include "setup.h"
@@ -41,6 +42,7 @@ int main(){
     GLuint vbo[SHAPES], vao[SHAPES];
 
     // Creates scene object: camera, shapes.
+    srand (static_cast <unsigned> (time(0)));
     Scene *scene = new Scene(WIDTH, HEIGHT, vbo, vao);
 
     // Shaders
