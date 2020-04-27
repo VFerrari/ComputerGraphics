@@ -8,19 +8,39 @@ Scene::Scene(uint16_t width, uint16_t height, GLuint *vbo, GLuint *vao){
 }
 
 void Scene::createFigures(void){
-    // Pyramid
+    // Pyramid (equilateral)
     drawPyramid(2.f, 2.f, 2.f, -6.f, 3.f, -1.f);
-    findCenter(0);
-
-    // Cube
-    curr_shape = 1;
-    drawParallelepiped(2.f, 2.f, 2.f, -1.f, -1.f, -1.f);
-    findCenter(1);
+    findCenter(curr_shape);
     
-    // Parallelepiped
-    curr_shape = 2;
+    // Pyramid (tall)
+    curr_shape++;
+    drawPyramid(1.f, 7.f, 2.f, 9.f, -10.f, -5.f);
+    findCenter(curr_shape);
+
+    // Pyramid (flat)
+    curr_shape++;
+    drawPyramid(2.f, 0.3f, 5.f, 2.f, 3.f, 10.f);
+    findCenter(curr_shape);
+
+    // Cube (regular)
+    curr_shape++;
+    drawParallelepiped(2.f, 2.f, 2.f, -1.f, -1.f, -1.f);
+    findCenter(curr_shape);
+    
+    // Cube (tiny)
+    curr_shape++;
+    drawParallelepiped(0.2f, 0.2f, 0.2f, -0.8f, -5.f, 4.f);
+    findCenter(curr_shape); 
+    
+    // Parallelepiped (tall)
+    curr_shape++;
     drawParallelepiped(1.f, 3.f, 2.f, 6.5f, -2.f, -1.f);
-    findCenter(2);
+    findCenter(curr_shape);
+    
+    // Parallelepiped (wide)
+    curr_shape++;
+    drawParallelepiped(4.f, 2.f, 1.f, -8.f, -7.f, -0.5f);
+    findCenter(curr_shape);
     
     curr_shape = 0;
 }
