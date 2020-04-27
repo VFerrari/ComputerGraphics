@@ -47,7 +47,7 @@ int main(){
     Shaders *sh = new Shaders();
     GLuint sh_prog;
     GLuint mvp_loc;
-    int vertex_color_loc;
+    int norm_loc;
     
     // Current shape.
     std::vector<float> points;
@@ -66,15 +66,15 @@ int main(){
     
     // Get shader attributes
     sh_prog = sh->getProgram();
-    vertex_color_loc = glGetUniformLocation(sh_prog, "vColor");
+    norm_loc = glGetUniformLocation(sh_prog, "vNormal");
     mvp_loc = glGetUniformLocation(sh_prog, "MVP");
+    
+    // Set normal
+    glUniform3f(norm_loc, 1.0f, 1.0f, 1.0f);
     
     // Set key callback
     glfwSetWindowUserPointer(window, scene);
     glfwSetKeyCallback(window, handleInput);
-
-    // Colors (TEMP)
-    float colors[SHAPES][3] = { {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f} };
 
     while(glfwWindowShouldClose(window) == 0){
 
@@ -88,7 +88,6 @@ int main(){
         // Draw shapes
         for(int i=0; i<SHAPES; i++){
             scene->getShape(i, &points);
-            glUniform3f(vertex_color_loc, colors[i][0], colors[i][1], colors[i][2]);
             glBindVertexArray(vao[i]);
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(points.size()/6));
         }

@@ -30,21 +30,22 @@ Shaders::Shaders(void){
     const char* vertex_shader =
             "#version 400\n"
             "layout (location=0) in vec3 position;"
-            "layout (location=1) in vec3 normal;"
+            "layout (location=1) in vec3 color;"
             "out vec3 vColor;"
             "out vec3 vNormal;"
             "uniform mat4 MVP;"
             "void main() {"
             " gl_Position = MVP*vec4(position, 5.0f);"
-            //" vColor = vec3(1,1,0);"
-            " vNormal = normal;"
+            " vColor = color;"
+            //" vNormal = normal;"
             "}";
 
     const char* fragment_shader =
             "#version 400\n"
-            "uniform vec3 vColor;"
-            //"in vec3 vColor;"
-            "in vec3 vNormal;"
+            //"uniform vec3 vColor;"
+            "uniform vec3 vNormal;"
+            "in vec3 vColor;"
+            //"in vec3 vNormal;"
             "out vec4 fColor;"
             "void main() {"
             "   vec3 lightColor = vec3(0.5f, 0.5f, 0.5f);"
