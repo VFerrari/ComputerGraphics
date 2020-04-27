@@ -63,7 +63,10 @@ void configGL(GLFWwindow* window){
 
     // Black background
     glClearColor(0.f, 0.f, 0.f, 1.0f);
-
-    // Background far away.
-    glClearDepth(1.0f);
+    
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    
+    // Accept fragment if it is closer to the camera than the former one
+    glDepthFunc(GL_LESS);
 }
