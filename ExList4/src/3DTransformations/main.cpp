@@ -6,11 +6,10 @@
 #include "setup.h"
 #include "shaders.h"
 #include "draw.h"
+#include "input.h"
 
 #define WIDTH 600
 #define HEIGHT 600
-
-#define SHAPES 2
 
 void GLAPIENTRY
 MessageCallback( GLenum source,
@@ -38,11 +37,11 @@ int main(){
     if(window == nullptr)
         return -1;
 
-    // Creates scene object: camera, shapes.
-    Scene *scene = new Scene(WIDTH, HEIGHT);
-
     // Vertex buffers and arrays.
     GLuint vbo[SHAPES], vao[SHAPES];
+
+    // Creates scene object: camera, shapes.
+    Scene *scene = new Scene(WIDTH, HEIGHT, vbo, vao);
 
     // Shaders
     Shaders *sh = new Shaders();
@@ -63,19 +62,16 @@ int main(){
 
 	// Insert shapes into buffers
 	for (uint8_t i=0; i<SHAPES; i++)
-		scene->bufferShape(vbo, vao, i, &points);
+		scene->bufferShape(i);
 	
 	// Get shader attributes
     sh_prog = sh->getProgram();
 	vertex_color_loc = glGetUniformLocation(sh_prog, "vColor");
     mvp_loc = glGetUniformLocation(sh_prog, "MVP");
-
-	// Get camera
-	mvp = scene->getCamera();
 	
 	// Set key callback
 	glfwSetWindowUserPointer(window, scene);
-	glfwSetKeyCallback(window, scene->handleInput);
+	glfwSetKeyCallback(window, handleInput);
 
 	// Colors (TEMP)
 	float colors[SHAPES][3] = { {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f} };
@@ -85,11 +81,13 @@ int main(){
         // Clear the screen.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        // MVP
+        // Camera
+		mvp = scene->getCamera();
         glUniformMatrix4fv(mvp_loc, 1, GL_FALSE, &mvp[0][0]);
 
         // Draw shapes
         for(int i=0; i<SHAPES; i++){
+			scene->getShape(i, &points);
 			glUniform3f(vertex_color_loc, colors[i][0], colors[i][1], colors[i][2]);
 			glBindVertexArray(vao[i]);
 			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(points.size()/6));

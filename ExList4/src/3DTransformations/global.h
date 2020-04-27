@@ -10,4 +10,6 @@
 #include <iostream>
 #include <cstdint>
 
+#define SHAPES 2
+
 #endif // GLOBAL_H
