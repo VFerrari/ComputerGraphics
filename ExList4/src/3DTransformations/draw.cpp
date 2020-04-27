@@ -89,6 +89,58 @@ void Scene::createFigures(void){
          1.0f,-1.0f, 1.0f, 0.15f, 0.54f, 0.99f
     };
     findCenter(1);
+    
+    // Parallelepiped
+    shapes[2] =  {
+        6.5f, -5.0f, -1.0f, 0.39f, 0.21f, 0.35f, // Left face
+        6.5f, -5.0f,  1.0f, 0.39f, 0.21f, 0.35f,
+        6.5f, -2.0f,  1.0f, 0.39f, 0.21f, 0.35f,
+        
+        7.5f, -2.0f, -1.0f, 0.81f, 0.30f, 0.82f, // Far Face
+        6.5f, -5.0f, -1.0f, 0.81f, 0.30f, 0.82f,
+        6.5f, -2.0f, -1.0f, 0.81f, 0.30f, 0.82f,
+        
+        7.5f, -5.0f,  1.0f, 0.01f, 0.91f, 0.83f, // Lower Face
+        6.5f, -5.0f, -1.0f, 0.01f, 0.91f, 0.83f,
+        7.5f, -5.0f, -1.0f, 0.01f, 0.91f, 0.83f,
+
+        7.5f, -2.0f, -1.0f, 0.81f, 0.30f, 0.82f, // Far Face
+        7.5f, -5.0f, -1.0f, 0.81f, 0.30f, 0.82f,
+        6.5f, -5.0f, -1.0f, 0.81f, 0.30f, 0.82f,
+        
+        6.5f, -2.0f, -1.0f, 0.39f, 0.21f, 0.35f, // Left Face
+        6.5f, -2.0f,  1.0f, 0.39f, 0.21f, 0.35f,
+        6.5f, -5.0f, -1.0f, 0.39f, 0.21f, 0.35f,
+        
+        7.5f, -5.0f,  1.0f, 0.01f, 0.91f, 0.83f, // Lower Face
+        6.5f, -5.0f,  1.0f, 0.01f, 0.91f, 0.83f,
+        6.5f, -5.0f, -1.0f, 0.01f, 0.91f, 0.83f,
+        
+        6.5f, -2.0f,  1.0f, 0.35f, 0.18f, 0.81f, // Close face
+        6.5f, -5.0f,  1.0f, 0.35f, 0.18f, 0.81f,
+        7.5f, -5.0f,  1.0f, 0.35f, 0.18f, 0.81f,
+
+        7.5f, -2.0f,  1.0f, 0.69f, 0.85f, 0.46f, // Right Face
+        7.5f, -5.0f, -1.0f, 0.69f, 0.85f, 0.46f,
+        7.5f, -2.0f, -1.0f, 0.69f, 0.85f, 0.46f,
+
+        7.5f, -5.0f, -1.0f, 0.69f, 0.85f, 0.46f, // Right Face
+        7.5f, -2.0f,  1.0f, 0.69f, 0.85f, 0.46f,
+        7.5f, -5.0f,  1.0f, 0.69f, 0.85f, 0.46f,         
+
+        7.5f, -2.0f,  1.0f, 0.73f, 0.98f, 0.03f, // Upper Face
+        7.5f, -2.0f, -1.0f, 0.73f, 0.98f, 0.03f,
+        6.5f, -2.0f, -1.0f, 0.73f, 0.98f, 0.03f,
+
+        7.5f, -2.0f,  1.0f, 0.73f, 0.98f, 0.03f, // Upper Face
+        6.5f, -2.0f, -1.0f, 0.73f, 0.98f, 0.03f,
+        6.5f, -2.0f,  1.0f, 0.73f, 0.98f, 0.03f,     
+        
+        7.5f, -2.0f,  1.0f, 0.35f, 0.18f, 0.81f, // Close face
+        6.5f, -2.0f,  1.0f, 0.35f, 0.18f, 0.81f,
+        7.5f, -5.0f,  1.0f, 0.35f, 0.18f, 0.81f
+    };
+    findCenter(2);
 }
 
 void Scene::createCamera(uint16_t width, uint16_t height){
@@ -97,7 +149,7 @@ void Scene::createCamera(uint16_t width, uint16_t height){
     glm::mat4 projection    = glm::mat4(1.0f);
 
     //model      = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 1.0f, 0.0f));
-    view       = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    view       = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
     projection = glm::perspective(glm::radians(45.0f), static_cast<float>(width)/height, 0.1f, 100.0f);
     
     camera_pos = projection*view*model;

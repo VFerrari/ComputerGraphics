@@ -5,11 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <cstdint>
 
-#define SHAPES 2
+#define SHAPES 3
 
 #endif // GLOBAL_H

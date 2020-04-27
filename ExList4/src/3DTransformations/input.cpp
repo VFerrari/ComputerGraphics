@@ -100,9 +100,9 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             // z: scale down or up in Z
             case GLFW_KEY_Z:
                 if(mods & GLFW_MOD_SHIFT)
-                    scene->scale(1.f, 1.f, 0.9f);
-                else
                     scene->scale(1.f, 1.f, 1.1f);
+                else
+                    scene->scale(1.f, 1.f, 0.9f);
                 update = true;
                 break;
             
@@ -120,7 +120,7 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
                 
             // a: rotate through Z
             case GLFW_KEY_A:
-                scene->rotate(15,3);
+                scene->rotate(15, 3);
                 update = true;
                 break;
                 
