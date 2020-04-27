@@ -56,25 +56,25 @@ int main(){
     glm::mat4 mvp;
     
 
-	// Generate vertex arrays and buffers.
+    // Generate vertex arrays and buffers.
     glGenBuffers(SHAPES, vbo); 
     glGenVertexArrays(SHAPES, vao);
 
-	// Insert shapes into buffers
-	for (uint8_t i=0; i<SHAPES; i++)
-		scene->bufferShape(i);
-	
-	// Get shader attributes
+    // Insert shapes into buffers
+    for (uint8_t i=0; i<SHAPES; i++)
+        scene->bufferShape(i);
+    
+    // Get shader attributes
     sh_prog = sh->getProgram();
-	vertex_color_loc = glGetUniformLocation(sh_prog, "vColor");
+    vertex_color_loc = glGetUniformLocation(sh_prog, "vColor");
     mvp_loc = glGetUniformLocation(sh_prog, "MVP");
-	
-	// Set key callback
-	glfwSetWindowUserPointer(window, scene);
-	glfwSetKeyCallback(window, handleInput);
+    
+    // Set key callback
+    glfwSetWindowUserPointer(window, scene);
+    glfwSetKeyCallback(window, handleInput);
 
-	// Colors (TEMP)
-	float colors[SHAPES][3] = { {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f} };
+    // Colors (TEMP)
+    float colors[SHAPES][3] = { {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f} };
 
     while(glfwWindowShouldClose(window) == 0){
 
@@ -82,16 +82,16 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         // Camera
-		mvp = scene->getCamera();
+        mvp = scene->getCamera();
         glUniformMatrix4fv(mvp_loc, 1, GL_FALSE, &mvp[0][0]);
 
         // Draw shapes
         for(int i=0; i<SHAPES; i++){
-			scene->getShape(i, &points);
-			glUniform3f(vertex_color_loc, colors[i][0], colors[i][1], colors[i][2]);
-			glBindVertexArray(vao[i]);
-			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(points.size()/6));
-		}
+            scene->getShape(i, &points);
+            glUniform3f(vertex_color_loc, colors[i][0], colors[i][1], colors[i][2]);
+            glBindVertexArray(vao[i]);
+            glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(points.size()/6));
+        }
 
         // Put the stuff we've been drawing onto the display
         glfwSwapBuffers(window);
@@ -107,12 +107,12 @@ int main(){
     glDeleteBuffers(SHAPES, vbo);
     glDeleteVertexArrays(SHAPES, vao);
 
-	// Delete shaders.
+    // Delete shaders.
     sh->destroyShaders();
-	
-	// Deleting heap objects.
-	delete scene;
-	delete sh;
+    
+    // Deleting heap objects.
+    delete scene;
+    delete sh;
 
     return 0;
 }

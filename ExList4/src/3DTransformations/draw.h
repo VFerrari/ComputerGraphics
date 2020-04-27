@@ -18,12 +18,12 @@ public:
     uint8_t getShape(uint8_t index, std::vector<float> *dest);
     uint8_t getCurrentShape(void);
 
-	// Setters
+    // Setters
     void setCameraMode(void);
     void setCurrentShape(uint8_t shape);
   
-	// Camera
-	void moveCamera(float factorX, float factorY);
+    // Camera
+    void moveCamera(float factorX, float factorY);
     
     // Buffer
     void bufferShape(uint8_t shape);
@@ -38,9 +38,9 @@ private:
     void createFigures(void);
     void createCamera(uint16_t width, uint16_t height);
 
-	// Transform
+    // Transform
     void scaleOneShape(float factorX, float factorY, float factorZ, uint8_t shape);
-	void translateOneShape(float factorX, float factorY, float factorZ, uint8_t shape);
+    void translateOneShape(float factorX, float factorY, float factorZ, uint8_t shape);
     void rotateOneShape(int angle, uint8_t axis, uint8_t shape);
     
     // Center

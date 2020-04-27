@@ -15,7 +15,7 @@ GLFWwindow* mainSetup(uint16_t width, uint16_t height, const char* name){
         return nullptr;
     }
 
-	// Window hints.
+    // Window hints.
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
