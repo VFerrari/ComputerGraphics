@@ -17,9 +17,9 @@ void Scene::createFigures(void){
     drawPyramid(1.f, 7.f, 2.f, 9.f, -10.f, -5.f);
     findCenter(curr_shape);
 
-    // Pyramid (flat)
+    // Tetrahedron (D4)
     curr_shape++;
-    drawPyramid(2.f, 0.3f, 5.f, 2.f, 3.f, 10.f);
+    drawTetrahedron(2.f, 2.f, 2.f, 2.f, 3.f, 10.f);
     findCenter(curr_shape);
 
     // Cube (regular)
@@ -151,6 +151,45 @@ void Scene::drawPyramid(float width, float height, float depth, float start_x, f
         start_x+width, start_y, start_z+depth, colors[4][0], colors[4][1], colors[4][2],
         start_x+width, start_y, start_z,       colors[4][0], colors[4][1], colors[4][2],
         start_x,       start_y, start_z,       colors[4][0], colors[4][1], colors[4][2]
+    };
+}
+
+/**
+ * Draws a tetrahedron in the current shape, given info on it.
+ * @param start_x : leftmost X value
+ * @param start_y : bottom y value
+ * @param start_z : farthest z value
+ */
+void Scene::drawTetrahedron(float width, float height, float depth, float start_x, float start_y, float start_z){
+    std::vector<float> colors[4];
+    float peak_x = start_x + width/2;
+    float peak_z = start_z + depth/2;
+    float peak_y = start_y+height;
+    
+    // Generate colors
+    for(int i=0; i<4; i++)
+        colors[i] = {getRandomColor(), getRandomColor(), getRandomColor()};
+    
+    shapes[curr_shape] = {
+        
+        // Side faces
+        peak_x,        peak_y,  peak_z,        colors[0][0], colors[0][1], colors[0][2],
+        peak_x,        start_y, start_z+depth, colors[0][0], colors[0][1], colors[0][2],
+        start_x+width, start_y, start_z      , colors[0][0], colors[0][1], colors[0][2],
+        
+        peak_x,        peak_y,  peak_z,        colors[1][0], colors[1][1], colors[1][2],
+        peak_x,        start_y, start_z+depth, colors[1][0], colors[1][1], colors[1][2],
+        start_x,       start_y, start_z,       colors[1][0], colors[1][1], colors[1][2],
+        
+        // Front face
+        peak_x,        peak_y,  peak_z,        colors[2][0], colors[2][1], colors[2][2],
+        start_x,       start_y, start_z,       colors[2][0], colors[2][1], colors[2][2],
+        start_x+width, start_y, start_z,       colors[2][0], colors[2][1], colors[2][2],
+                
+        // Base
+        peak_x,        start_y, start_z+depth, colors[3][0], colors[3][1], colors[3][2],
+        start_x,       start_y, start_z,       colors[3][0], colors[3][1], colors[3][2],
+        start_x+width, start_y, start_z      , colors[3][0], colors[3][1], colors[3][2],
     };
 }
 
