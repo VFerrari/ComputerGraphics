@@ -23,7 +23,7 @@ public:
     void setCurrentShape(uint8_t shape);
   
     // Camera
-    void moveCamera(float factorX, float factorY);
+    void moveCamera(float factorX, float factorY, float factorZ);
         
     // Buffer
     void bufferShape(uint8_t shape);

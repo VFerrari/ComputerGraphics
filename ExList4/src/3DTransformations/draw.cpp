@@ -67,8 +67,8 @@ void Scene::createCamera(uint16_t width, uint16_t height){
     camera_pos = projection*view*model;
 }
 
-void Scene::moveCamera(float factorX, float factorY){
-    camera_pos = glm::translate(camera_pos, glm::vec3(factorX, factorY, 0.0f));
+void Scene::moveCamera(float factorX, float factorY, float factorZ){
+    camera_pos = glm::translate(camera_pos, glm::vec3(factorX, factorY, factorZ));
 }
 
 glm::mat4 Scene::getCamera(void){

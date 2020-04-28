@@ -1,5 +1,10 @@
 #include "input.h"
 
+#define ANGLE 15
+#define SCALE 0.1f
+#define C_SPEED 0.4f
+#define S_SPEED 0.2f
+
 void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods){
     Scene *scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
     bool update = false;
@@ -22,9 +27,9 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             // up: move camera up or translate shape up
             case GLFW_KEY_UP:
                 if(scene->getCameraMode())
-                    scene->moveCamera(0.f, -0.3f);
+                    scene->moveCamera(0.f, -C_SPEED, 0.f);
                 else{
-                    scene->translate(0.f, 0.2f, 0.f); 
+                    scene->translate(0.f, S_SPEED, 0.f); 
                     update = true;
                 }
                 break;
@@ -32,9 +37,9 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             // down: move camera down or translate shape down
             case GLFW_KEY_DOWN:
                 if(scene->getCameraMode())
-                    scene->moveCamera(0.f, 0.3f);
+                    scene->moveCamera(0.f, C_SPEED, 0.f);
                 else{
-                    scene->translate(0.f, -0.2f, 0.f);
+                    scene->translate(0.f, -S_SPEED, 0.f);
                     update = true;
                 }
                 break;
@@ -42,9 +47,9 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             // left: move camera left or translate shape left
             case GLFW_KEY_LEFT:
                 if(scene->getCameraMode())
-                    scene->moveCamera(0.3f, 0.f);
+                    scene->moveCamera(C_SPEED, 0.f, 0.f);
                 else{
-                    scene->translate(-0.2f, 0.f, 0.f);
+                    scene->translate(-S_SPEED, 0.f, 0.f);
                     update = true;
                 }
                 break;
@@ -52,9 +57,9 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             // right: move camera right or translate shape right
             case GLFW_KEY_RIGHT:
                 if(scene->getCameraMode())
-                    scene->moveCamera(-0.3f, 0.f);
+                    scene->moveCamera(-C_SPEED, 0.f, 0.f);
                 else{
-                    scene->translate(0.2f, 0.f, 0.f);
+                    scene->translate(S_SPEED, 0.f, 0.f);
                     update = true;
                 }
                 break;
@@ -82,58 +87,66 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             // x: scale down or up in X
             case GLFW_KEY_X:
                 if(mods & GLFW_MOD_SHIFT)
-                    scene->scale(1.1f, 1.f, 1.f);
+                    scene->scale(1.0+SCALE, 1.f, 1.f);
                 else
-                    scene->scale(0.9f, 1.f, 1.f);
+                    scene->scale(1.0-SCALE, 1.f, 1.f);
                 update = true;
                 break;
             
             // y: scale down or up in Y
             case GLFW_KEY_Y:
                 if(mods & GLFW_MOD_SHIFT)
-                    scene->scale(1.f, 1.1f, 1.f);
+                    scene->scale(1.f, 1.0+SCALE, 1.f);
                 else
-                    scene->scale(1.f, 0.9f, 1.f);
+                    scene->scale(1.f, 1.0-SCALE, 1.f);
                 update = true;
                 break;
                 
             // z: scale down or up in Z
             case GLFW_KEY_Z:
                 if(mods & GLFW_MOD_SHIFT)
-                    scene->scale(1.f, 1.f, 1.1f);
+                    scene->scale(1.f, 1.f, 1.0+SCALE);
                 else
-                    scene->scale(1.f, 1.f, 0.9f);
+                    scene->scale(1.f, 1.f, 1.0-SCALE);
                 update = true;
                 break;
             
             // s: rotate through X
             case GLFW_KEY_S:
-                scene->rotate(15, 1);
+                scene->rotate(ANGLE, 1);
                 update = true;
                 break;
             
             // q: rotate through Y
             case GLFW_KEY_Q:
-                scene->rotate(15, 2);
+                scene->rotate(ANGLE, 2);
                 update = true;
                 break;
                 
             // a: rotate through Z
             case GLFW_KEY_A:
-                scene->rotate(15, 3);
+                scene->rotate(ANGLE, 3);
                 update = true;
                 break;
                 
-            // ,: move the shape forward
+            // ,: move the shape or camera forward
             case GLFW_KEY_COMMA:
-                scene->translate(0.f, 0.f, 0.2f);
-                update = true;
+                if(scene->getCameraMode())
+                    scene->moveCamera(0.f, 0.f, C_SPEED);
+                else{
+                    scene->translate(0.f, 0.f, S_SPEED);
+                    update = true;
+                }
                 break;
             
-            // .: move the shape backward
+            // .: move the shape or camera backward
             case GLFW_KEY_PERIOD:
-                scene->translate(0.f, 0.f, -0.2f);
-                update = true;
+                if(scene->getCameraMode())
+                    scene->moveCamera(0.f, 0.f, -C_SPEED);
+                else{
+                    scene->translate(0.f, 0.f, -S_SPEED);
+                    update = true;
+                }
                 break;
                     
             default:
