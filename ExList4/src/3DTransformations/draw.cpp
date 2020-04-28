@@ -9,7 +9,7 @@ Scene::Scene(uint16_t width, uint16_t height, GLuint *vbo, GLuint *vao){
 
 void Scene::createFigures(void){
     // Pyramid (equilateral)
-    drawPyramid(2.f, 2.f, 2.f, -6.f, 3.f, -1.f);
+    drawPyramid(2.f, 2.f, 2.f, -8.f, 3.f, -1.f);
     findCenter(curr_shape);
     
     // Pyramid (tall)
@@ -34,7 +34,7 @@ void Scene::createFigures(void){
     
     // Parallelepiped (tall)
     curr_shape++;
-    drawParallelepiped(1.f, 3.f, 2.f, 6.5f, -2.f, -1.f);
+    drawParallelepiped(1.f, 3.f, 2.f, 6.5f, -1.f, -1.f);
     findCenter(curr_shape);
     
     // Parallelepiped (wide)
@@ -44,11 +44,13 @@ void Scene::createFigures(void){
     
     // Hourglass
     curr_shape++;
-    drawHourglass(2.f, 4.f, 2.f, 3.f, -5.f, 0.f);
+    drawHourglass(2.f, 4.f, 2.f, 3.f, -6.f, 0.f);
     findCenter(curr_shape);
     
     // D20 (icosahedron)
     curr_shape++;
+    center[curr_shape] = {-1.f, 6.f, 0.f};
+    drawIcosahedron(center[curr_shape], 1.3f);
     
     curr_shape = 0;
 }
@@ -288,6 +290,105 @@ void Scene::drawHourglass(float width, float height, float depth, float start_x,
     };
 }
 
+/**
+ * Draws an icosahedron (D20) in the current shape, given info on it.
+ * Uses center and radius, instead of x,y,z start values.
+ */
+void Scene::drawIcosahedron(std::array<float,3> center, float radius){
+    const float X=.525731112119133606f;
+    const float Z=.850650808352039932f;
+    std::vector<float> colors[20];
+    
+    float cx = center[0], cy = center[1], cz = center[2];
+    float rX = radius*X, rZ = radius*Z;
+    
+    // Generate colors
+    for(int i=0; i<20; i++)
+        colors[i] = {getRandomColor(), getRandomColor(), getRandomColor()};
+        
+    shapes[curr_shape] = {
+        cx-rX, cy   , cz+rZ, colors[0][0], colors[0][1], colors[0][2],// 0
+        cx   , cy+rZ, cz+rX, colors[0][0], colors[0][1], colors[0][2],// 4
+        cx+rX, cy   , cz+rZ, colors[0][0], colors[0][1], colors[0][2],// 1
+        
+        cx-rX, cy   , cz+rZ, colors[1][0], colors[1][1], colors[1][2],// 0
+        cx-rZ, cy+rX, cz   , colors[1][0], colors[1][1], colors[1][2],// 9
+        cx   , cy+rZ, cz+rX, colors[1][0], colors[1][1], colors[1][2],// 4
+        
+        cx-rZ, cy+rX, cz   , colors[2][0], colors[2][1], colors[2][2],// 9
+        cx   , cy+rZ, cz-rX, colors[2][0], colors[2][1], colors[2][2],// 5
+        cx   , cy+rZ, cz+rX, colors[2][0], colors[2][1], colors[2][2],// 4
+        
+        cx   , cy+rZ, cz+rX, colors[3][0], colors[3][1], colors[3][2],// 4
+        cx   , cy+rZ, cz-rX, colors[3][0], colors[3][1], colors[3][2],// 5
+        cx+rZ, cy+rX, cz   , colors[3][0], colors[3][1], colors[3][2],// 8
+        
+        cx   , cy+rZ, cz+rX, colors[4][0], colors[4][1], colors[4][2],// 4
+        cx+rZ, cy+rX, cz   , colors[4][0], colors[4][1], colors[4][2],// 8
+        cx+rX, cy   , cz+rZ, colors[4][0], colors[4][1], colors[4][2],// 1
+        
+        cx+rZ, cy+rX, cz   , colors[5][0], colors[5][1], colors[5][2],// 8
+        cx+rZ, cy-rX, cz   , colors[5][0], colors[5][1], colors[5][2],// 10
+        cx+rX, cy   , cz+rZ, colors[5][0], colors[5][1], colors[5][2],// 1
+                
+        cx+rZ, cy+rX, cz   , colors[6][0], colors[6][1], colors[6][2],// 8
+        cx+rX, cy   , cz-rZ, colors[6][0], colors[6][1], colors[6][2],// 3
+        cx+rZ, cy-rX, cz   , colors[6][0], colors[6][1], colors[6][2],// 10
+        
+        cx   , cy+rZ, cz-rX, colors[7][0], colors[7][1], colors[7][2],// 5
+        cx+rX, cy   , cz-rZ, colors[7][0], colors[7][1], colors[7][2],// 3
+        cx+rZ, cy+rX, cz   , colors[7][0], colors[7][1], colors[7][2],// 8
+        
+        cx   , cy+rZ, cz-rX, colors[8][0], colors[8][1], colors[8][2],// 5
+        cx-rX, cy   , cz-rZ, colors[8][0], colors[8][1], colors[8][2],// 2
+        cx+rX, cy   , cz-rZ, colors[8][0], colors[8][1], colors[8][2],// 3
+        
+        cx-rX, cy   , cz-rZ, colors[10][0], colors[10][1], colors[10][2],// 2
+        cx   , cy-rZ, cz-rX, colors[10][0], colors[10][1], colors[10][2],// 7
+        cx+rX, cy   , cz-rZ, colors[10][0], colors[10][1], colors[10][2],// 3
+        
+        cx   , cy-rZ, cz-rX, colors[11][0], colors[11][1], colors[11][2],// 7
+        cx+rZ, cy-rX, cz   , colors[11][0], colors[11][1], colors[11][2],// 10
+        cx+rX, cy   , cz-rZ, colors[11][0], colors[11][1], colors[11][2],// 3
+        
+        cx   , cy-rZ, cz-rX, colors[12][0], colors[12][1], colors[12][2],// 7
+        cx   , cy-rZ, cz+rX, colors[12][0], colors[12][1], colors[12][2],// 6
+        cx+rZ, cy-rX, cz   , colors[12][0], colors[12][1], colors[12][2],// 10
+        
+        cx   , cy-rZ, cz-rX, colors[13][0], colors[13][1], colors[13][2],// 7
+        cx-rZ, cy-rX, cz   , colors[13][0], colors[13][1], colors[13][2],// 11
+        cx   , cy-rZ, cz+rX, colors[13][0], colors[13][1], colors[13][2],// 6
+        
+        cx-rZ, cy-rX, cz   , colors[14][0], colors[14][1], colors[14][2],// 11
+        cx-rX, cy   , cz+rZ, colors[14][0], colors[14][1], colors[14][2],// 0
+        cx   , cy-rZ, cz+rX, colors[14][0], colors[14][1], colors[14][2],// 6
+        
+        cx-rX, cy   , cz+rZ, colors[15][0], colors[15][1], colors[15][2],// 0
+        cx+rX, cy   , cz+rZ, colors[15][0], colors[15][1], colors[15][2],// 1
+        cx   , cy-rZ, cz+rX, colors[15][0], colors[15][1], colors[15][2],// 6
+        
+        cx   , cy-rZ, cz+rX, colors[16][0], colors[16][1], colors[16][2],// 6
+        cx+rX, cy   , cz+rZ, colors[16][0], colors[16][1], colors[16][2],// 1
+        cx+rZ, cy-rX, cz   , colors[16][0], colors[16][1], colors[16][2],// 10
+        
+        cx-rZ, cy+rX, cz   , colors[17][0], colors[17][1], colors[17][2],// 9
+        cx-rX, cy   , cz+rZ, colors[17][0], colors[17][1], colors[17][2],// 0
+        cx-rZ, cy-rX, cz   , colors[17][0], colors[17][1], colors[17][2],// 11
+        
+        cx-rZ, cy+rX, cz   , colors[18][0], colors[18][1], colors[18][2],// 9
+        cx-rZ, cy-rX, cz   , colors[18][0], colors[18][1], colors[18][2],// 11
+        cx-rX, cy   , cz-rZ, colors[18][0], colors[18][1], colors[18][2],// 2
+        
+        cx-rZ, cy+rX, cz   , colors[19][0], colors[19][1], colors[19][2],// 9
+        cx-rX, cy   , cz-rZ, colors[19][0], colors[19][1], colors[19][2],// 2
+        cx   , cy+rZ, cz-rX, colors[19][0], colors[19][1], colors[19][2],// 5
+        
+        cx   , cy-rZ, cz-rX, colors[9][0], colors[9][1], colors[9][2],// 7
+        cx-rX, cy   , cz-rZ, colors[9][0], colors[9][1], colors[9][2],// 2
+        cx-rZ, cy-rX, cz   , colors[9][0], colors[9][1], colors[9][2]// 11
+    };
+}
+
 void Scene::bufferShape(uint8_t shape){
     std::vector<float> points;
         
@@ -428,8 +529,8 @@ void Scene::rotate(int angle, uint8_t axis){
  */
 void Scene::findCenter(uint8_t shape){
     int i, j;
-    float max[3] = {-100000.f, -100000.f, -100000.f};
-    float min[3] = {100000.f, 100000.f, 100000.f};
+    float max[3] = {-1000000.f, -1000000.f, -1000000.f};
+    float min[3] = {1000000.f, 1000000.f, 1000000.f};
     
     for(i=0; i<shapes[shape].size(); i+=6){
         for(j=0; j<3; j++){

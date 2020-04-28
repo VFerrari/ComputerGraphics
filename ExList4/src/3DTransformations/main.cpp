@@ -9,8 +9,8 @@
 #include "draw.h"
 #include "input.h"
 
-#define WIDTH 600
-#define HEIGHT 600
+#define WIDTH 1280
+#define HEIGHT 720
 
 void GLAPIENTRY
 MessageCallback( GLenum source,
