@@ -1,6 +1,11 @@
 #include "setup.h"
 
-
+/**
+ * Application main setup.
+ * Initializes GLFW and GLEW.
+ * Creates GLFW window.
+ * Configures OpenGL.
+ */
 GLFWwindow* mainSetup(uint16_t width, uint16_t height, const char* name){
 
     if (!initGLFW())
@@ -56,6 +61,9 @@ int initGLEW(void){
     return 1;
 }
 
+/**
+ * Background color, input mode, depth test.
+ */
 void configGL(GLFWwindow* window){
 
     // Ensure we can capture the keys being pressed.

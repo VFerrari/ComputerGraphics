@@ -7,6 +7,10 @@ Scene::Scene(uint16_t width, uint16_t height, GLuint *vbo, GLuint *vao){
     createCamera(width, height);
 }
 
+/**
+ * Creates the shapes that will be part of the application.
+ * Finds their centers.
+ */
 void Scene::createFigures(void){
     // Pyramid (equilateral)
     drawPyramid(2.f, 2.f, 2.f, -8.f, 3.f, -1.f);
@@ -428,6 +432,9 @@ void Scene::drawIcosahedron(std::array<float,3> center, float radius){
     };
 }
 
+/**
+ * Adds shape to VBO and VAO.
+ */
 void Scene::bufferShape(uint8_t shape){
     std::vector<float> points;
         
@@ -468,6 +475,10 @@ void Scene::translateOneShape(float factorX, float factorY, float factorZ, uint8
     }
 }
 
+/**
+ * Rotates a single shape by an angle.
+ * Simulates multiplication by the rotation matrix.
+ */
 void Scene::rotateOneShape(int angle, uint8_t axis, uint8_t shape){
     double sin = std::sin(angle*PI/180);
     double cos = std::cos(angle*PI/180);
@@ -503,6 +514,11 @@ void Scene::rotateOneShape(int angle, uint8_t axis, uint8_t shape){
     }
 }
 
+/**
+ * Scales shape or scene.
+ * If to scale shape, translates to origin, scales and then back to original spot.
+ * Or just scale the entire scene in relation to the origin. Then find the new center of each.
+ */
 void Scene::scale(float factorX, float factorY, float factorZ){
     int i;
     
@@ -520,7 +536,9 @@ void Scene::scale(float factorX, float factorY, float factorZ){
     }
 }
 
-
+/**
+ * Translates shape or scene.
+ */
 void Scene::translate(float factorX, float factorY, float factorZ){
     int i;
     

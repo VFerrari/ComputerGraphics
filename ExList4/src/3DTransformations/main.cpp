@@ -1,6 +1,4 @@
-#include <memory>
 #include <vector>
-#include <array>
 #include <ctime>
 
 #include "global.h"
@@ -12,28 +10,10 @@
 #define WIDTH 1280
 #define HEIGHT 720
 
-void GLAPIENTRY
-MessageCallback( GLenum source,
-                 GLenum type,
-                 GLuint id,
-                 GLenum severity,
-                 GLsizei length,
-                 const GLchar* message,
-                 const void* userParam)
-{
-    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message);
-}
-
 int main(){
 
     // Setup for GLFW, GLEW and OpenGL. Creates window.
     GLFWwindow *window = mainSetup(WIDTH, HEIGHT, "3D Transformations");
-
-    // Debug
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(MessageCallback, 0);
 
     if(window == nullptr)
         return -1;
@@ -41,8 +21,10 @@ int main(){
     // Vertex buffers and arrays.
     GLuint vbo[SHAPES], vao[SHAPES];
 
-    // Creates scene object: camera, shapes.
+    // Sets random seed.
     srand (static_cast <unsigned> (time(0)));
+    
+    // Creates scene object: camera, shapes.
     Scene *scene = new Scene(WIDTH, HEIGHT, vbo, vao);
 
     // Shaders

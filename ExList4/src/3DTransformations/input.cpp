@@ -3,7 +3,7 @@
 #define ANGLE 15
 #define SCALE 0.1f
 #define C_SPEED 0.4f
-#define S_SPEED 0.2f
+#define S_SPEED 0.3f
 
 void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods){
     Scene *scene = static_cast<Scene*>(glfwGetWindowUserPointer(window));
@@ -74,14 +74,12 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
             case GLFW_KEY_7:
             case GLFW_KEY_8:
             case GLFW_KEY_9:
-                scene->setCurrentShape(scancode-10);
-                printf("%d\n", scancode-10);
+                changeHighlight(scene, scancode-10);
                 break;
             
             // 0: select all shapes
             case GLFW_KEY_0:
-                scene->setCurrentShape(SHAPES);
-                printf("All\n");
+                changeHighlight(scene, SHAPES);
                 break;
             
             // x: scale down or up in X
@@ -164,5 +162,46 @@ void handleInput(GLFWwindow* window, int key, int scancode, int action, int mods
         else
             for(int i=0; i<SHAPES; i++)
                 scene->bufferShape(i);
+    }
+}
+
+/**
+ * Changes selected shape.
+ * Scales back current shape(s).
+ * Scales (highlights) selected shape(s).
+ */
+void changeHighlight(Scene *scene, uint8_t shape){
+    const float factor = 1.1f;
+    uint8_t current = scene->getCurrentShape();
+    uint8_t i;
+
+    // If all shapes are highlighted, scale back all of them.
+    if(current == SHAPES){
+        for(i=0; i<SHAPES; i++){
+            scene->setCurrentShape(i);
+            scene->scale(1/factor, 1/factor, 1/factor);
+            scene->bufferShape(i);
+        }
+    }
+    // Scale back current shape.
+    else{
+        scene->scale(1/factor, 1/factor, 1/factor);
+        scene->bufferShape(current);
+    }
+        
+    // Highlight all or one.
+    if(shape == SHAPES){
+        for(i=0; i<SHAPES; i++){
+            scene->setCurrentShape(i);
+            scene->scale(factor, factor, factor);
+            scene->bufferShape(i);
+        }
+        scene->setCurrentShape(shape);
+    }
+    else{
+        // Scale current shape.
+        scene->setCurrentShape(shape);
+        scene->scale(factor, factor, factor);
+        scene->bufferShape(shape);
     }
 }
