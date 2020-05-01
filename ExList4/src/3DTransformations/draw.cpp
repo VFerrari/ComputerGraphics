@@ -443,7 +443,7 @@ void Scene::bufferShape(uint8_t shape){
     
     // Bind a VBO and initialize data.
     glBindBuffer(GL_ARRAY_BUFFER, vbo[shape]);
-    glBufferData(GL_ARRAY_BUFFER, points.size()*6*sizeof(GLfloat), points.data(), GL_STATIC_DRAW); 
+    glBufferData(GL_ARRAY_BUFFER, points.size()*sizeof(GLfloat), points.data(), GL_STATIC_DRAW); 
 
     // Bind a VAO, and set its attributes.
     glBindVertexArray(vao[shape]);
