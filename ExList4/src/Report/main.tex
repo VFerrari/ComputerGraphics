@@ -1,0 +1,398 @@
+\documentclass[12pt]{article}
+\usepackage{design_ASC}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=cyan,
+    filecolor=magenta,
+    urlcolor=blue,}
+
+% Subfigures
+\usepackage{subfig}
+
+\usepackage{gensymb}
+\usepackage{enumitem}
+
+\setlength\parindent{0pt} %% Do not touch this
+
+%% -----------------------------
+%% TITLE
+%% -----------------------------
+\title{Exercise List \#4} %% Assignment Title
+
+\author{Victor F. Ferrari - RA 187890\\ %% Student name
+v187890@dac.unicamp.br\\
+MO814A/MC937A - Topics in Computer Graphics\\ %% Code and course name
+\textsc{Universidade Estadual de Campinas}
+}
+
+\date{\today} %% Change "\today" by another date manually
+%% -----------------------------
+%% -----------------------------
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\setlength{\droptitle}{-5em}    
+%% %%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+
+% --------------------------
+% Start here
+% --------------------------
+
+%%%%%%%%%%%%%%%
+\section{OpenGL Geometric Transformations}
+%%%%%%%%%%%%%%%
+
+The first assigment of the list was to implement an OpenGL application that allows the user to apply geometric transformations to 3D shapes.
+
+\subsection{Details}
+The application was made using \texttt{C++} with the \texttt{GLFW}, \texttt{GLEW} and \texttt{GLM} external libraries. Building is done via \texttt{cmake}, followed by \texttt{make}. The application does not take any arguments, with every interaction happening during the execution.
+
+The application consists of 9 3D shapes that can be interacted with via the keyboard, and a camera which can also be moved. The possible transformations are \textbf{rotation}, \textbf{scaling} and \textbf{translation}, in any axis, in local coordinates. If all shapes are selected, the transformations are applied in world coordinates. Every face has a different color, to ease visualization of the transformations.
+
+When a shape is selected, it is highlighted by \textbf{scaling up} with a factor of 1.1. The original idea was to either create a contour or insert the x,y and z axes lines, but that wasn't practical with the current code structure and without much shader knowledge (for the contour), so the scaling was added for highlighting. When another shape is selected, it scales back by that same factor.
+
+\subsection{Usage}
+The controls are as specified in the project definition, this section repeating that information.
+
+The application starts in \textbf{camera mode}. In this mode, the arrow keys are used to move the camera along the X and Y axis, and the period and comma keys (".", ",") are used to move backward and forward with the camera, respectively. The user can exit or reenter camera mode by pressing the "C" key at any time.
+
+The user can select one of the 9 shapes via the number keys 1-9. The 0 key is used to select all shapes, and the transformations are then applied in world coordinates, instead of local coordinates. Every transformation from here on will follow those rules. It is possible to recognize which shape is selected because it is scaled by a factor of 1.1.
+
+The same keys used by camera mode are also used for \textbf{translating} shapes, the only difference being in the definition of "forward" and "backward". The comma key (",") is used to move a shape forward, that is, in the direction of the camera (if it is facing the shapes), and the period key (".") is used to move a shape backward, that is, in the opposite direction from the camera (if it is facing the shapes).
+
+\textbf{Scaling} in the X, Y and Z axis can be done with the X, Y and Z keys, respectively. Pressing just the keys \textbf{decreases} the respective dimension of the shape by a factor of 0.9, while pressing the keys along with \texttt{shift} \textbf{increases} the respective dimension by a factor of 1.1. This transformation also works in camera mode, with the selected shape(s).
+
+\textbf{Rotation} in the X, Y and Z axis can be done with the S, Q and A keys, respectively. The rotation is \textbf{counterclockwise}, by an angle of 15 degrees. The shape rotates around the center of its bounding box, so it might not be perfect depending on the shape and combination of rotation actions. Numerical errors are also possible. This transformation also works in camera mode, with the selected shape(s).
+
+All of the factors described above can be changed by altering constants in file \texttt{input.cpp}.
+
+Finally, the escape key can be used to close the application.
+
+\section{Questions}
+
+\subsection*{Question 1}
+{\bfseries Write the translation matrix that moves the point $(X_0, Y_0)$ to the point $(X_1, Y_1)$.}
+
+The X offset is $u=X_1 - X_0$, and the Y offset is $v=Y_1 - Y_0$. So, the resulting translation matrix is:
+\begin{equation*}
+    M = 
+    \begin{bmatrix}
+    1 & 0 & u \\
+    0 & 1 & v \\
+    0 & 0 & 1
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+    1 & 0 & X_1 - X_0 \\
+    0 & 1 & Y_1 - Y_0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+Multiplying this matrix $M$ and the point $(X_0, Y_0)$ results in point $(X_1, Y_1)$.
+
+\subsection*{Question 2}
+{\bfseries Write the rotation matrices for angles 45\degree, 60\degree, 90\degree, 180\degree~and -90\degree.}
+
+A rotation matrix is given by the following formula:
+\begin{equation*}
+    R=
+    \begin{bmatrix}
+    \cos{\alpha} & -\sin{\alpha} & 0 \\
+    \sin{\alpha} & \cos{\alpha} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+So, the rotation matrix for different angles are:
+\begin{itemize}
+    \item 45\degree
+\end{itemize}
+$sin(45) = \frac{\sqrt{2}}{2}$ \hspace{1cm} $cos(45) = \frac{\sqrt{2}}{2}$
+\begin{equation*}
+    \renewcommand\arraystretch{2}
+    R=
+    \begin{bmatrix}
+    \frac{\sqrt{2}}{2} & -\frac{\sqrt{2}}{2} & 0 \\
+    \frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\begin{itemize}
+    \item 60\degree
+\end{itemize}
+$sin(60) = \frac{\sqrt{3}}{2}$ \hspace{1cm} $cos(60) = \frac{1}{2}$
+\begin{equation*}
+    \renewcommand\arraystretch{2}
+    R=
+    \begin{bmatrix}
+    \frac{1}{2} & -\frac{\sqrt{3}}{2} & 0 \\
+    \frac{\sqrt{3}}{2} & \frac{1}{2} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\begin{itemize}
+    \item 90\degree
+\end{itemize}
+$sin(90) = 1$ \hspace{1cm} $cos(90) = 0$
+\begin{equation*}
+    R=
+    \begin{bmatrix}
+    0 & -1 & 0 \\
+    1 & 0 & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\begin{itemize}
+    \item 180\degree
+\end{itemize}
+$sin(180) = 0$ \hspace{1cm} $cos(180) = -1$
+\begin{equation*}
+    R=
+    \begin{bmatrix}
+    -1 & 0 & 0 \\
+    0 & -1 & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\begin{itemize}
+    \item -90\degree
+\end{itemize}
+$sin(-90) = -1$ \hspace{1cm} $cos(-90) = 0$
+\begin{equation*}
+    R=
+    \begin{bmatrix}
+    0 & 1 & 0 \\
+    -1 & 0 & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\subsection*{Question 3}
+{\bfseries Write the scaling matrix that leads $(X_0, Y_0)$ to $(X_1, Y_1)$ (suppose none of these numbers are zero.}
+
+The X scaling factor is $u=\frac{X_1}{X_0}$, and the Y scaling factor is $v=\frac{Y_1}{Y_0}$. So, the resulting scaling matrix is:
+\begin{equation*}
+    M = 
+    \begin{bmatrix}
+    u & 0 & 0 \\
+    0 & v & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+    \frac{X_1}{X_0} & 0 & 0 \\
+    0 & \frac{Y_1}{Y_0} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+Multiplying this matrix $M$ and the point $(X_0, Y_0)$ results in point $(X_1, Y_1)$.
+
+\subsection*{Question 4}
+{\bfseries Let R be the rotation by 90\degree~around the origin, and T be the translation by the vector (2,3). Calculate the matrices for transformations $A=TR$ and $B=RT$. Are the results the same? Why?.}
+
+$sin(90) = 1$ \hspace{1cm} $cos(90) = 0$
+\begin{equation*}
+    R=
+    \begin{bmatrix}
+    0 & -1 & 0 \\
+    1 & 0 & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \hspace{5cm}
+    T=
+    \begin{bmatrix}
+    1 & 0 & 2 \\
+    0 & 1 & 3 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+Doing $A=TR$ and $B=RT$, we have:
+\begin{equation*}
+    A=
+    \begin{bmatrix}
+    0 & -1 & 2 \\
+    1 & 0 & 3 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \hspace{5cm}
+    B=
+    \begin{bmatrix}
+    0 & -1 & -3 \\
+    1 & 0 & 2 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+As can be seen, the results are different. This happens because translation and rotation are not commutative. Rotation always happens in relation to the origin point, and when a translation happens, the result of such rotation is then different than rotating before translating, since the distance to the origin changes.
+
+\subsection*{Question 5}
+{\bfseries Prove that the multiplication of transformation matrices for each of the following sequences is commutative:
+\begin{enumerate}[label=\alph*)]
+    \item Two successive rotations.
+    \item Two successive translations.
+    \item Two successive scalings.
+\end{enumerate}
+}
+
+The answers to this question will, as with the ones before, consider 2D transformations. 3D transformations obey the exact same rules, but with an added dimension, so it was chosen to not demonstrate with 3D transformations.
+
+\begin{itemize}
+    \item Two successive rotations.
+\end{itemize}
+
+A rotation matrix by angle $\alpha$ is given by the following formula:
+\begin{equation*}
+    R_\alpha=
+    \begin{bmatrix}
+    \cos{\alpha} & -\sin{\alpha} & 0 \\
+    \sin{\alpha} & \cos{\alpha} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+So, multiplying :
+\begin{equation*}
+    R_\alpha R_\beta=
+    \begin{bmatrix}
+    \cos{\alpha} & -\sin{\alpha} & 0 \\
+    \sin{\alpha} & \cos{\alpha} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+    \cos{\beta} & -\sin{\beta} & 0 \\
+    \sin{\beta} & \cos{\beta} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+    R_\alpha R_\beta=
+    \begin{bmatrix}
+    \cos{\alpha} \cos{\beta} - \sin{\alpha} \sin{\beta} & -\sin{\beta} \cos{\alpha} - \sin{\alpha} \cos{\beta} & 0 \\
+    \sin{\alpha} \cos{\beta} + \sin{\beta} \cos{\alpha} & \cos{\alpha} \cos{\beta} + \sin{\alpha} \sin{\beta} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+    R_\alpha R_\beta= 
+    \begin{bmatrix}
+    \cos{\alpha+\beta} & -\sin{\alpha+\beta} & 0 \\
+    \sin{\alpha+\beta} & \cos{\alpha+\beta} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+As can be seen by the previous equation, two successive rotations are the same as rotating by the sum of their angles. Since sum is a commutative operation ($a+b = b+a$), rotation is also commutative.
+
+\begin{equation*}
+    R_\beta R_\alpha= 
+    \begin{bmatrix}
+    \cos{\beta+\alpha} & -\sin{\beta+\alpha} & 0 \\
+    \sin{\beta+\alpha} & \cos{\beta+\alpha} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\begin{itemize}
+    \item Two successive translations.
+\end{itemize}
+
+A translation matrix is given by the following formula, with $u$ being the X offset and $v$ being the Y offset:
+\begin{equation*}
+    T = 
+    \begin{bmatrix}
+    1 & 0 & u \\
+    0 & 1 & v \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+So, multiplying:
+\begin{equation*}
+    T_1T_2 = 
+    \begin{bmatrix}
+    1 & 0 & u_1 \\
+    0 & 1 & v_1 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+    1 & 0 & u_2 \\
+    0 & 1 & v_2 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    1 & 0 & u_1 + u_2 \\
+    0 & 1 & v_1 + v_2 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+As can be seen by the previous equation, two successive translations are the same as translating by the sum of their offsets. Since sum is a commutative operation ($a+b = b+a$), translation is also commutative.
+
+\begin{equation*}
+    T_2T_1=
+    \begin{bmatrix}
+    1 & 0 & u_2 + u_1 \\
+    0 & 1 & v_2 + v_1 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\begin{itemize}
+    \item Two successive scalings.
+\end{itemize}
+
+A scaling matrix is given by the following formula, with $s_x$ being the X scaling factor and $s_y$ being the Y scaling factor:
+\begin{equation*}
+    S = 
+    \begin{bmatrix}
+    s_x & 0 & 0 \\
+    0 & s_y & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+So, multiplying:
+\begin{equation*}
+    S_1S_2 = 
+    \begin{bmatrix}
+    s_{x1} & 0 & 0 \\
+    0 & s_{y1} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+    s_{x2} & 0 & 0 \\
+    0 & s_{y2} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    s_{x1}s_{x2} & 0 & 0 \\
+    0 & s_{y1}s_{y2} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+As can be seen by the previous equation, two successive scalings are the same as scaling by the product of their scaling factors. Since scalar product is a commutative operation ($ab = ba$), scaling is also commutative.
+
+\begin{equation*}
+    S_2S_1=
+    \begin{bmatrix}
+    s_{x2}s_{x1} & 0 & 0 \\
+    0 & s_{y2}s_{y1} & 0 \\
+    0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\end{document}
