@@ -5,7 +5,7 @@ Repo for course MC937, with all practical projects and exercises developed for t
 
 Exams (In Portuguese)
 ---------------------
-**Exam1** - Graphics pipeline, color spaces, polygon fill, line/polygon clipping, 2D transformations, curves, surfaces.
+**Exam1** - Graphics pipeline, color spaces, polygon fill, line/polygon clipping, 2D transformations, curves, surfaces. Grade: 10.2/10.2.
 
 Exercise Lists
 --------------
