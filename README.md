@@ -17,7 +17,9 @@ Exercise Lists
 
 **ExList4** - OpenGL 3D Geometric Transformations (C++). Grade: 10/10.
 
-**ExList5** - Theoretical: Projection Transformations, Lighting and Shading.
+**ExList5** - Theoretical: Projection Transformations, Lighting and Shading. Grade: 10/10.
+
+**ExList6** - Theoretical: Hidden Surfaces Removal, Animation, Rendering, Global Illumination, Shaders, Antialiasing.
 
 Course given by professor [Aurea Soriano](http://www.recod.ic.unicamp.br/~aurea.soriano/index.html).
 
