@@ -7,6 +7,8 @@ Exams (In Portuguese)
 ---------------------
 **Exam1** - Graphics pipeline, color spaces, polygon fill, line/polygon clipping, 2D transformations, curves, surfaces. Grade: 10.2/10.2.
 
+**Exam2** - Rendering pipeline, lighting, shading, shaders, curves/surfaces, global illumination, 3D transformations, antialiasing, animation, modeling, texturing, hidden surfaces, bounding volumes, collision detection.
+
 Exercise Lists
 --------------
 **ExList1** - Regular theoretical exercise list, about related areas to computer graphics. Grade: 10/10.
