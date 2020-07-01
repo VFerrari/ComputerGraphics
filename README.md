@@ -11,7 +11,7 @@ Exams (In Portuguese)
 
 Exercise Lists
 --------------
-**ExList1** - Regular theoretical exercise list, about related areas to computer graphics. Grade: 10/10.
+**ExList1** - Theoretical: related areas to computer graphics. Grade: 10/10.
 
 **ExList2** - Color space converter, supporting RGB (sRGB), CMY, HSV, XYZ and CIELAB, under Illuminant d50, in Python; and Scanline Fill Algorithm, using Qt in C++. Grade: 10/10.
 
@@ -21,7 +21,7 @@ Exercise Lists
 
 **ExList5** - Theoretical: Projection Transformations, Lighting and Shading. Grade: 10/10.
 
-**ExList6** - Theoretical: Hidden Surfaces Removal, Animation, Rendering, Global Illumination, Shaders, Antialiasing.
+**ExList6** - Theoretical: Hidden Surfaces Removal, Animation, Rendering, Global Illumination, Shaders, Antialiasing. Grade: 9.5/10 (Question 9 is wrong). 
 
 Course given by professor [Aurea Soriano](http://www.recod.ic.unicamp.br/~aurea.soriano/index.html).
 
