@@ -3,6 +3,8 @@ MC937/MO814 - Computer Graphics
 
 Repo for course MC937, with all practical projects and exercises developed for the course.
 
+Final Grade: 9.96/10.00
+
 Exams (In Portuguese)
 ---------------------
 **Exam1** - Graphics pipeline, color spaces, polygon fill, line/polygon clipping, 2D transformations, curves, surfaces. Grade: 10.2/10.2.
