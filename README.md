@@ -23,7 +23,7 @@ Exercise Lists
 
 **ExList5** - Theoretical: Projection Transformations, Lighting and Shading. Grade: 10/10.
 
-**ExList6** - Theoretical: Hidden Surfaces Removal, Animation, Rendering, Global Illumination, Shaders, Antialiasing. Grade: 9.5/10 (Question 9 is wrong). 
+**ExList6** - Theoretical: Hidden Surfaces Removal, Animation, Rendering, Global Illumination, Shaders, Antialiasing. Grade: 9.5/10 (Question 9 is wrong, fixed in Exam2). 
 
 Course given by professor [Aurea Soriano](http://www.recod.ic.unicamp.br/~aurea.soriano/index.html).
 
