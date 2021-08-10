@@ -9,6 +9,7 @@
 #include "IndexBuffer.h"
 #include "Renderer.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -20,7 +21,7 @@ int main(void) {
   if (!glfwInit()) return -1;
 
   /* GLFW hints */
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -50,10 +51,10 @@ int main(void) {
   {
     /* Shape array */
     float positions[] = {
-        -0.5f, -0.5f,  // 0
-        0.5f,  -0.5f,  // 1
-        0.5f,  0.5f,   // 2
-        -0.5f, 0.5f    // 3
+        -0.5f, -0.5f, 0.0f, 0.0f,  // 0
+        0.5f,  -0.5f, 1.0f, 0.0f,  // 1
+        0.5f,  0.5f,  1.0f, 1.0f,  // 2
+        -0.5f, 0.5f,  0.0f, 1.0f   // 3
     };
 
     unsigned int indices[] = {
@@ -61,12 +62,17 @@ int main(void) {
         2, 3, 0   // 2nd triangle
     };
 
+    /* Blending */
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
     /* Vertex Arrays and Buffers */
     VertexArray va;
-    VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 
     /* Vertex Attributes */
     VertexBufferLayout layout;
+    layout.Push<float>(2);
     layout.Push<float>(2);
     va.AddBuffer(vb, layout);
 
@@ -74,13 +80,18 @@ int main(void) {
     IndexBuffer ib(indices, 6);
 
     /* Shaders */
-    Shader shader("../res/shaders/Basic.shader");
+    Shader shader("../res/shaders/Texture.shader");
     shader.Bind();
 
     /* Initialize color values. */
     float r = 0.0f;
     float increment = 0.05f;
     shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+
+    /* Get Texture */
+    Texture texture("../res/textures/Expedition.png");
+    texture.Bind();
+    shader.SetUniform1i("u_Texture", 0);
 
     /* Clear everything (for testing vao). */
     va.Unbind();
