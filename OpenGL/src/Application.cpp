@@ -18,12 +18,17 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
+// Vendor
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 // Constants
-#define HEIGHT 960.0f
-#define WIDTH 540.0f
-#define ASPECT_RATIO (HEIGHT / WIDTH)
-#define ASPECT_RATIO_H ASPECT_RATIO *HEIGHT
+#define WIDTH 960.0f
+#define HEIGHT 540.0f
+#define ASPECT_RATIO (WIDTH / HEIGHT)
 #define ASPECT_RATIO_W ASPECT_RATIO *WIDTH
+#define ASPECT_RATIO_H ASPECT_RATIO *HEIGHT
 
 int main(void) {
   GLFWwindow *window;
@@ -37,7 +42,7 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(HEIGHT, WIDTH, "Hello World", NULL, NULL);
+  window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;
@@ -99,8 +104,8 @@ int main(void) {
     float increment = 0.05f;
     shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
 
-    /* MVP */
-    glm::mat4 proj = glm::ortho(0.0f, HEIGHT, 0.0f, WIDTH, -1.0f, 1.0f);
+    /* Initial MVP settings */
+    glm::mat4 proj = glm::ortho(0.0f, WIDTH, 0.0f, HEIGHT, -1.0f, 1.0f);
     glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
     glm::mat4 mvp = proj * view * model;
@@ -120,23 +125,58 @@ int main(void) {
     /* Creating renderer */
     Renderer renderer;
 
+    /* ImGui setup */
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(
+        (char *)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+
+    /* Model matrix translation */
+    glm::vec3 translation(200, 200, 0);
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
       /* Render here */
       renderer.Clear();
 
-      /* Draw with a certain color. */
+      /* ImGui Frame */
+      ImGui_ImplOpenGL3_NewFrame();
+      ImGui_ImplGlfw_NewFrame();
+      ImGui::NewFrame();
+
+      /* Move MVP */
+      model = glm::translate(glm::mat4(1.0f), translation);
+      mvp = proj * view * model;
+
+      /* Draw with a certain color and MVP. */
       shader.Bind();
+      shader.SetUniformMat4f("u_MVP", mvp);
       shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
       renderer.Draw(va, ib, shader);
 
-      // Change color.
+      /* Change color. */
       if (r > 1.0f)
         increment = -0.05f;
       else if (r < 0.0f)
         increment = 0.05f;
 
       r += increment;
+
+      /* ImGui Example */
+      {
+        ImGui::SliderFloat3("Translation", &translation.x, 0.0f, WIDTH);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+                    1000.0f / ImGui::GetIO().Framerate,
+                    ImGui::GetIO().Framerate);
+      }
+
+      /* Render ImGui */
+      ImGui::Render();
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
       /* Swap front and back buffers */
       glfwSwapBuffers(window);
@@ -146,6 +186,9 @@ int main(void) {
     }
   }
 
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
   glfwTerminate();
   return 0;
 }
