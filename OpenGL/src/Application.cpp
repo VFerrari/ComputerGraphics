@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 // Local
+#include "GUI.h"
 #include "IndexBuffer.h"
 #include "Renderer.h"
 #include "Shader.h"
@@ -18,17 +19,12 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
-// Vendor
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
 // Constants
 #define WIDTH 960.0f
 #define HEIGHT 540.0f
 #define ASPECT_RATIO (WIDTH / HEIGHT)
-#define ASPECT_RATIO_W ASPECT_RATIO *WIDTH
-#define ASPECT_RATIO_H ASPECT_RATIO *HEIGHT
+#define ASPECT_RATIO_W (ASPECT_RATIO * WIDTH)
+#define ASPECT_RATIO_H (ASPECT_RATIO * HEIGHT)
 
 int main(void) {
   GLFWwindow *window;
@@ -125,15 +121,8 @@ int main(void) {
     /* Creating renderer */
     Renderer renderer;
 
-    /* ImGui setup */
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(
-        (char *)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+    /* Creating GUI */
+    GUI gui(window);
 
     /* Model matrix translation */
     glm::vec3 translation(200, 200, 0);
@@ -143,10 +132,8 @@ int main(void) {
       /* Render here */
       renderer.Clear();
 
-      /* ImGui Frame */
-      ImGui_ImplOpenGL3_NewFrame();
-      ImGui_ImplGlfw_NewFrame();
-      ImGui::NewFrame();
+      /* GUI Frame */
+      gui.NewFrame();
 
       /* Move MVP */
       model = glm::translate(glm::mat4(1.0f), translation);
@@ -166,17 +153,12 @@ int main(void) {
 
       r += increment;
 
-      /* ImGui Example */
-      {
-        ImGui::SliderFloat3("Translation", &translation.x, 0.0f, WIDTH);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-                    1000.0f / ImGui::GetIO().Framerate,
-                    ImGui::GetIO().Framerate);
-      }
+      /* Draw GUI */
+      gui.ShowSlider3f("Translation", &translation.x, 0.0f, WIDTH);
+      gui.ShowFramerate();
 
-      /* Render ImGui */
-      ImGui::Render();
-      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+      /* Render GUI */
+      gui.Render();
 
       /* Swap front and back buffers */
       glfwSwapBuffers(window);
@@ -186,9 +168,6 @@ int main(void) {
     }
   }
 
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
   glfwTerminate();
   return 0;
 }
