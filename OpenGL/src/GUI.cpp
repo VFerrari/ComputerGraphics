@@ -32,6 +32,10 @@ void GUI::Render() {
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+void GUI::Begin(const char *name) { ImGui::Begin(name); }
+
+void GUI::End() { ImGui::End(); }
+
 void GUI::ShowFramerate() {
   ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
               1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -40,3 +44,9 @@ void GUI::ShowFramerate() {
 void GUI::ShowSlider3f(const char *name, float *target, float min, float max) {
   ImGui::SliderFloat3(name, target, min, max);
 }
+
+void GUI::ShowColorEdit4(const char *name, float *target) {
+  ImGui::ColorEdit4(name, target);
+}
+
+bool GUI::Button(const char *name) { return ImGui::Button(name); }
