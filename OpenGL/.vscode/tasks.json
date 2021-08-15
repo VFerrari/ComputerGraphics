@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "C/C++: clang++ build active file",
+			"command": "/usr/bin/clang++",
+			"args": [
+				"-g",
+				"-std=c++20",
+				"-I./src/vendor",
+				"src/*.cpp",
+				"src/vendor/*/*.cpp",
+				"-o",
+				"${workspaceRoot}/build/${fileBasenameNoExtension}",
+				"-lGL",
+				"-lglfw",
+				"-lGLEW"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

@@ -1,0 +1,15 @@
+OpenGL Course
+=============
+Code from [The Cherno](https://www.youtube.com/c/TheChernoProject/)'s OpenGL playlist, with some personal modifications.
+
+Dependencies
+------------
+This project uses some libraries, and doesn't include all of its dependencies.
+
+The non-included libraries are the following:
+- [GLFW](https://www.glfw.org/)
+- [GLEW](http://glew.sourceforge.net/)
+- [GLM](https://github.com/g-truc/glm)
+
+The included libraries are:
+- [STB Image](https://github.com/nothings/stb)

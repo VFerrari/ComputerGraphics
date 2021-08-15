@@ -5,6 +5,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+// GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // Local
 #include "IndexBuffer.h"
 #include "Renderer.h"
@@ -13,6 +17,13 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+
+// Constants
+#define HEIGHT 960.0f
+#define WIDTH 540.0f
+#define ASPECT_RATIO (HEIGHT / WIDTH)
+#define ASPECT_RATIO_H ASPECT_RATIO *HEIGHT
+#define ASPECT_RATIO_W ASPECT_RATIO *WIDTH
 
 int main(void) {
   GLFWwindow *window;
@@ -26,7 +37,7 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+  window = glfwCreateWindow(HEIGHT, WIDTH, "Hello World", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;
@@ -51,10 +62,10 @@ int main(void) {
   {
     /* Shape array */
     float positions[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f,  // 0
-        0.5f,  -0.5f, 1.0f, 0.0f,  // 1
-        0.5f,  0.5f,  1.0f, 1.0f,  // 2
-        -0.5f, 0.5f,  0.0f, 1.0f   // 3
+        100.0f, 100.0f, 0.0f, 0.0f,  // 0
+        200.0f, 100.0f, 1.0f, 0.0f,  // 1
+        200.0f, 200.0f, 1.0f, 1.0f,  // 2
+        100.0f, 200.0f, 0.0f, 1.0f   // 3
     };
 
     unsigned int indices[] = {
@@ -88,8 +99,15 @@ int main(void) {
     float increment = 0.05f;
     shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
 
+    /* MVP */
+    glm::mat4 proj = glm::ortho(0.0f, HEIGHT, 0.0f, WIDTH, -1.0f, 1.0f);
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+    glm::mat4 mvp = proj * view * model;
+    shader.SetUniformMat4f("u_MVP", mvp);
+
     /* Get Texture */
-    Texture texture("../res/textures/Expedition.png");
+    Texture texture("../res/textures/ChernoLogo.png");
     texture.Bind();
     shader.SetUniform1i("u_Texture", 0);
 
