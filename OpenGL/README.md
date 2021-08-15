@@ -13,3 +13,4 @@ The non-included libraries are the following:
 
 The included libraries are:
 - [STB Image](https://github.com/nothings/stb)
+- [ImGui 1.82](https://github.com/ocornut/imgui/tree/v1.83)
