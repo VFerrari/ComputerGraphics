@@ -63,10 +63,10 @@ int main(void) {
   {
     /* Shape array */
     float positions[] = {
-        100.0f, 100.0f, 0.0f, 0.0f,  // 0
-        200.0f, 100.0f, 1.0f, 0.0f,  // 1
-        200.0f, 200.0f, 1.0f, 1.0f,  // 2
-        100.0f, 200.0f, 0.0f, 1.0f   // 3
+        -50.0f, -50.0f, 0.0f, 0.0f,  // 0
+        50.0f,  -50.0f, 1.0f, 0.0f,  // 1
+        50.0f,  50.0f,  1.0f, 1.0f,  // 2
+        -50.0f, 50.0f,  0.0f, 1.0f   // 3
     };
 
     unsigned int indices[] = {
@@ -98,11 +98,11 @@ int main(void) {
     /* Initialize color values. */
     float r = 0.0f;
     float increment = 0.05f;
-    shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+    //shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
 
     /* Initial MVP settings */
     glm::mat4 proj = glm::ortho(0.0f, WIDTH, 0.0f, HEIGHT, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
     glm::mat4 mvp = proj * view * model;
     shader.SetUniformMat4f("u_MVP", mvp);
@@ -125,7 +125,8 @@ int main(void) {
     GUI gui(window);
 
     /* Model matrix translation */
-    glm::vec3 translation(200, 200, 0);
+    glm::vec3 translationA(200, 200, 0);
+    glm::vec3 translationB(400, 200, 0);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
@@ -135,17 +136,25 @@ int main(void) {
       /* GUI Frame */
       gui.NewFrame();
 
-      /* Move MVP */
-      model = glm::translate(glm::mat4(1.0f), translation);
-      mvp = proj * view * model;
+      /* Move MVP and Draw */
+      {
+        model = glm::translate(glm::mat4(1.0f), translationA);
+        mvp = proj * view * model;
+        shader.Bind();
+        shader.SetUniformMat4f("u_MVP", mvp);
+        renderer.Draw(va, ib, shader);
+      }
 
-      /* Draw with a certain color and MVP. */
-      shader.Bind();
-      shader.SetUniformMat4f("u_MVP", mvp);
-      shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
-      renderer.Draw(va, ib, shader);
+      {
+        model = glm::translate(glm::mat4(1.0f), translationB);
+        mvp = proj * view * model;
+        shader.Bind();
+        shader.SetUniformMat4f("u_MVP", mvp);
+        renderer.Draw(va, ib, shader);
+      }
 
       /* Change color. */
+      //shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
       if (r > 1.0f)
         increment = -0.05f;
       else if (r < 0.0f)
@@ -154,7 +163,8 @@ int main(void) {
       r += increment;
 
       /* Draw GUI */
-      gui.ShowSlider3f("Translation", &translation.x, 0.0f, WIDTH);
+      gui.ShowSlider3f("Translation A", &translationA.x, 0.0f, WIDTH);
+      gui.ShowSlider3f("Translation B", &translationB.x, 0.0f, WIDTH);
       gui.ShowFramerate();
 
       /* Render GUI */
