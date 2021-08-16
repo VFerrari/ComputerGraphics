@@ -2,6 +2,8 @@ OpenGL Course
 =============
 Code from [The Cherno](https://www.youtube.com/c/TheChernoProject/)'s OpenGL playlist, with some personal modifications.
 
+This repository contains a test framework for some basic OpenGL concepts. Expect only the most basic concepts, with the proper abstractions.
+
 Dependencies
 ------------
 This project uses some libraries, and doesn't include all of its dependencies.
