@@ -9,6 +9,7 @@
 #include "Display.h"
 #include "GUI.h"
 #include "Renderer.h"
+#include "Settings.h"
 
 // Tests
 #include "tests/TestBatchRendering.h"
@@ -20,7 +21,7 @@
 int main(void) {
   try {
     // Initialize display
-    Display display("Tests");
+    Display display("Tests", WIDTH, HEIGHT);
 
     /* Initialize GLEW */
     if (glewInit() != GLEW_OK) {

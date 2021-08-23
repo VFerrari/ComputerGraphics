@@ -9,7 +9,7 @@ class Display {
   GLFWwindow *m_Window;
 
  public:
-  Display(const char *windowName);
+  Display(const char *windowName, float width, float height);
   ~Display();
   GLFWwindow *GetWindow() const { return m_Window; }
   void Poll();

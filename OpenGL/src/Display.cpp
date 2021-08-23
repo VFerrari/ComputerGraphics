@@ -3,10 +3,7 @@
 // STL
 #include <stdexcept>
 
-// Local
-#include "Settings.h"
-
-Display::Display(const char *windowName) {
+Display::Display(const char *windowName, float width, float height) {
   /* Initialize the GLFW library */
   if (!glfwInit()) {
     throw std::runtime_error("GLFW Initialization failed");
@@ -18,7 +15,7 @@ Display::Display(const char *windowName) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   /* Create a windowed mode window and its OpenGL context */
-  m_Window = glfwCreateWindow(WIDTH, HEIGHT, windowName, NULL, NULL);
+  m_Window = glfwCreateWindow(width, height, windowName, NULL, NULL);
   if (!m_Window) {
     glfwTerminate();
     throw std::runtime_error("GLFW Initialization failed");
