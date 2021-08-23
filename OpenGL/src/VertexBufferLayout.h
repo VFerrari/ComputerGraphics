@@ -8,6 +8,7 @@
 
 // Local
 #include "Renderer.h"
+#include "Vertex.h"
 
 struct VertexBufferElement {
   unsigned int type;
@@ -64,4 +65,16 @@ template <>
 inline void VertexBufferLayout::Push<unsigned char>(unsigned int count) {
   m_Elements.push_back({GL_UNSIGNED_BYTE, count, GL_TRUE});
   m_Stride += count * VertexBufferElement::getSizeOfType(GL_UNSIGNED_BYTE);
+}
+
+template <>
+inline void VertexBufferLayout::Push<Vertex>(unsigned int count) {
+  m_Elements.push_back(
+      {GL_FLOAT, sizeof(Vertex::Position) / sizeof(float), GL_FALSE});
+  m_Elements.push_back(
+      {GL_FLOAT, sizeof(Vertex::Color) / sizeof(float), GL_FALSE});
+  m_Elements.push_back(
+      {GL_FLOAT, sizeof(Vertex::TexCoords) / sizeof(float), GL_FALSE});
+  m_Elements.push_back({GL_FLOAT, 1, GL_FALSE});
+  m_Stride += sizeof(Vertex);
 }

@@ -1,8 +1,5 @@
 #include "TestDynamicBatchRendering.h"
 
-// C Library
-#include <cstring>
-
 // Local
 #include "VertexBufferLayout.h"
 
@@ -13,7 +10,6 @@ namespace test {
 TestDynamicBatchRendering::TestDynamicBatchRendering(GUI &gui)
     : m_Proj(glm::ortho(-ASPECT_RATIO, ASPECT_RATIO, -1.0f, 1.0f, -1.0f, 1.0f)),
       m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0))),
-      m_Model(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0))),
       Test(gui) {
   GLCall(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 
@@ -33,10 +29,7 @@ TestDynamicBatchRendering::TestDynamicBatchRendering(GUI &gui)
 
   /* Vertex Attributes */
   VertexBufferLayout layout;
-  layout.Push<float>(2);  // Positions
-  layout.Push<float>(4);  // Colors
-  layout.Push<float>(2);  // Texture pos.
-  layout.Push<float>(1);  // Texture ID
+  layout.Push<Vertex>(1);
   m_VAO->AddBuffer(*m_VBO, layout);
 
   /* Index Buffer */
@@ -68,7 +61,6 @@ TestDynamicBatchRendering::TestDynamicBatchRendering(GUI &gui)
 }
 
 void TestDynamicBatchRendering::OnRender() {
-  glm::mat4 MVP = m_Proj * m_View * m_Model;
   GLCall(glClear(GL_COLOR_BUFFER_BIT));
   m_Shader->Bind();
 
@@ -76,6 +68,9 @@ void TestDynamicBatchRendering::OnRender() {
   m_TextureA->Bind(0);
   m_TextureB->Bind(1);
 
+  // Set MVP
+  glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
+  glm::mat4 MVP = m_Proj * m_View * model;
   m_Shader->SetUniformMat4f("u_MVP", MVP);
 
   // Set dynamic vertex buffer.
@@ -133,6 +128,7 @@ Vertex *TestDynamicBatchRendering::CreateQuad(Vertex *target, float x, float y,
 void TestDynamicBatchRendering::OnGUIRender() {
   GUI &gui = GetGUI();
   gui.ShowDrag2f("Quad Position", m_QuadPosition, 0.1f);
+  gui.ShowDrag2f("Translation", &m_Translation.x, 0.1f);
   gui.ShowFramerate();
 }
 

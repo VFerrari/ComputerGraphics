@@ -14,15 +14,9 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Vertex.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
-
-struct Vertex {
-  glm::vec2 Position;
-  glm::vec4 Color;
-  glm::vec2 TexCoords;
-  float TexID;
-};
 
 namespace test {
 
@@ -34,11 +28,13 @@ class TestDynamicBatchRendering : public Test {
   std::unique_ptr<Shader> m_Shader;
   std::unique_ptr<Texture> m_TextureA, m_TextureB;
 
-  glm::mat4 m_Proj, m_View, m_Model;
+  glm::mat4 m_Proj, m_View;
 
   Renderer m_Renderer;
 
+  // GUI
   float m_QuadPosition[2] = {-1.5f, -0.5f};
+  glm::vec3 m_Translation;
 
  public:
   TestDynamicBatchRendering(GUI &gui);
