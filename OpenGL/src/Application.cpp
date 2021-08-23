@@ -1,11 +1,12 @@
 // STL
 #include <iostream>
+#include <stdexcept>
 
 // OpenGL
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 // Local
+#include "Display.h"
 #include "GUI.h"
 #include "Renderer.h"
 
@@ -16,49 +17,25 @@
 #include "tests/TestDynamicBatchRendering.h"
 #include "tests/TestTexture2D.h"
 
-// Constants
-#include "Settings.h"
-
 int main(void) {
-  GLFWwindow *window;
+  try {
+    // Initialize display
+    Display display("Tests");
 
-  /* Initialize the GLFW library */
-  if (!glfwInit()) return -1;
+    /* Initialize GLEW */
+    if (glewInit() != GLEW_OK) {
+      std::cerr << "Failed to initialize GLEW" << std::endl;
+      return -1;
+    }
 
-  /* GLFW hints */
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    /* Print the version */
+    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-  /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(WIDTH, HEIGHT, "Tests", NULL, NULL);
-  if (!window) {
-    glfwTerminate();
-    return -1;
-  }
-
-  /* Make the window's context current */
-  glfwMakeContextCurrent(window);
-
-  /* Set swap interval */
-  glfwSwapInterval(1);
-
-  /* Initialize GLEW */
-  if (glewInit() != GLEW_OK) {
-    std::cerr << "Failed to initialize GLEW" << std::endl;
-    glfwTerminate();
-    return 0;
-  }
-
-  /* Print the version */
-  std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-
-  {
     /* Creating renderer */
     Renderer renderer;
 
     /* Creating GUI */
-    GUI gui(window);
+    GUI gui(display.GetWindow());
 
     /* Creating Test Menu */
     test::Test *currentTest = nullptr;
@@ -73,7 +50,7 @@ int main(void) {
     testMenu->RegisterTest<test::TestDynamicBatchRendering>(
         "Dynamic Batch Rendering");
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!display.ShouldClose()) {
       renderer.Clear();
 
       /* GUI Frame */
@@ -95,16 +72,16 @@ int main(void) {
       /* Render GUI */
       gui.Render();
 
-      /* Swap front and back buffers */
-      glfwSwapBuffers(window);
-
-      /* Poll for and process events */
-      glfwPollEvents();
+      display.SwapBuffers();
+      display.Poll();
     }
     if (currentTest != testMenu) delete testMenu;
     delete currentTest;
-  }
 
-  glfwTerminate();
-  return 0;
+    return 0;
+
+  } catch (const std::runtime_error &e) {
+    std::cerr << e.what() << '\n';
+    return -1;
+  }
 }
