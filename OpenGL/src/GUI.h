@@ -18,6 +18,7 @@ class GUI {
   void End();
 
   void ShowFramerate();
+  void ShowDrag2f(const char *name, float *target, float speed);
   void ShowSlider3f(const char *name, float *target, float min, float max);
   void ShowColorEdit4(const char *name, float *target);
 

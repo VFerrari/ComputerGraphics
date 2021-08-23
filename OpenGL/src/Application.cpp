@@ -10,10 +10,11 @@
 #include "Renderer.h"
 
 // Tests
-#include "tests/TestClearColor.h"
-#include "tests/TestBlinkingSquare.h"
-#include "tests/TestTexture2D.h"
 #include "tests/TestBatchRendering.h"
+#include "tests/TestBlinkingSquare.h"
+#include "tests/TestClearColor.h"
+#include "tests/TestDynamicBatchRendering.h"
+#include "tests/TestTexture2D.h"
 
 // Constants
 #include "Settings.h"
@@ -69,6 +70,8 @@ int main(void) {
     testMenu->RegisterTest<test::TestBlinkingSquare>("Blinking Square");
     testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
     testMenu->RegisterTest<test::TestBatchRendering>("Batch Rendering");
+    testMenu->RegisterTest<test::TestDynamicBatchRendering>(
+        "Dynamic Batch Rendering");
 
     while (!glfwWindowShouldClose(window)) {
       renderer.Clear();

@@ -41,6 +41,10 @@ void GUI::ShowFramerate() {
               1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 
+void GUI::ShowDrag2f(const char *name, float *target, float speed) {
+  ImGui::DragFloat2(name, target, speed);
+}
+
 void GUI::ShowSlider3f(const char *name, float *target, float min, float max) {
   ImGui::SliderFloat3(name, target, min, max);
 }
