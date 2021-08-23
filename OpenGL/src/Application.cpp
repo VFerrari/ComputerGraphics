@@ -13,6 +13,7 @@
 #include "tests/TestClearColor.h"
 #include "tests/TestBlinkingSquare.h"
 #include "tests/TestTexture2D.h"
+#include "tests/TestBatchRendering.h"
 
 // Constants
 #include "Settings.h"
@@ -25,7 +26,7 @@ int main(void) {
 
   /* GLFW hints */
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   /* Create a windowed mode window and its OpenGL context */
@@ -67,6 +68,7 @@ int main(void) {
     testMenu->RegisterTest<test::TestClearColor>("Clear Color");
     testMenu->RegisterTest<test::TestBlinkingSquare>("Blinking Square");
     testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
+    testMenu->RegisterTest<test::TestBatchRendering>("Batch Rendering");
 
     while (!glfwWindowShouldClose(window)) {
       renderer.Clear();

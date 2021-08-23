@@ -13,30 +13,29 @@
 // Local
 #include "Renderer.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 
 namespace test {
 
-class TestBlinkingSquare : public Test {
+class TestBatchRendering : public Test {
  private:
   std::unique_ptr<VertexArray> m_VAO;
   std::unique_ptr<VertexBuffer> m_VBO;
   std::unique_ptr<IndexBuffer> m_IBO;
   std::unique_ptr<Shader> m_Shader;
+  std::unique_ptr<Texture> m_TextureA, m_TextureB;
 
-  float m_Red, m_Increment;
+  glm::mat4 m_Proj, m_View, m_Model;
 
   Renderer m_Renderer;
 
  public:
-  TestBlinkingSquare(GUI &gui);
+  TestBatchRendering(GUI &gui);
 
   void OnRender() override;
   void OnGUIRender() override;
-
- private:
-  void IncrementColor();
 };
 
 }  // namespace test

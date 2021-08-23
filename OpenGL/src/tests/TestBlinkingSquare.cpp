@@ -32,17 +32,18 @@ TestBlinkingSquare::TestBlinkingSquare(GUI &gui)
 
   /* Shader */
   m_Shader = std::make_unique<Shader>("../res/shaders/Basic.shader");
+  m_Shader->Bind();
+  m_Shader->SetUniformMat4f("u_MVP", glm::mat4(1.0f));
 }
 
 void TestBlinkingSquare::OnRender() {
-  GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
   GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
   m_Renderer.Draw(*m_VAO, *m_IBO, *m_Shader);
 
   /* Set color and apply change. */
   m_Shader->Bind();
-  m_Shader->SetUniform4f("u_Color", m_Red, 0.3f, 0.8f, 1.0f);
+  m_Shader->SetUniform4f("u_Color", {m_Red, 0.3f, 0.8f, 1.0f});
   IncrementColor();
 }
 

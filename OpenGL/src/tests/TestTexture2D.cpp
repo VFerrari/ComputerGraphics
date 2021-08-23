@@ -47,22 +47,23 @@ TestTexture2D::TestTexture2D(GUI &gui)
   m_Shader->Bind();
 
   /* Get Texture */
-  m_Texture = std::make_unique<Texture>("../res/textures/ChernoLogo.png");
+  m_TextureA = std::make_unique<Texture>("../res/textures/ChernoLogo.png");
+  m_TextureB = std::make_unique<Texture>("../res/textures/Expedition.png");
   m_Shader->SetUniform1i("u_Texture", 0);
 }
 
 void TestTexture2D::OnRender() {
-  GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
   GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
   glm::mat4 model;
-  m_Texture->Bind();
 
   /* Object A */
+  m_TextureA->Bind();
   model = glm::translate(glm::mat4(1.0f), m_TranslationA);
   DrawTexture(model);
 
   /* Object B */
+  m_TextureB->Bind();
   model = glm::translate(glm::mat4(1.0f), m_TranslationB);
   DrawTexture(model);
 }

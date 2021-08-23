@@ -25,7 +25,7 @@ class TestTexture2D : public Test {
   std::unique_ptr<VertexBuffer> m_VBO;
   std::unique_ptr<IndexBuffer> m_IBO;
   std::unique_ptr<Shader> m_Shader;
-  std::unique_ptr<Texture> m_Texture;
+  std::unique_ptr<Texture> m_TextureA, m_TextureB;
 
   glm::mat4 m_Proj, m_View;
   glm::vec3 m_TranslationA, m_TranslationB;
