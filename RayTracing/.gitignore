@@ -1,0 +1,20 @@
+# Directories
+.vscode/
+build/
+.cache
+
+# Files
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+
+# Gnome Builder config file
+.buildconfig
+
+# meson files
+meson.build
+WalnutApp/meson.build
+
+# Exclude
+!vendor/bin
