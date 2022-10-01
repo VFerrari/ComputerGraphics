@@ -29,7 +29,8 @@ imguilib = static_library(
 walnut_deps = [
     dependency('vulkan'),
     dependency('glfw3'),
-    dependency('glm')
+    dependency('glm'),
+    dependency('openmp')
 ]
 
 entrylib = static_library(

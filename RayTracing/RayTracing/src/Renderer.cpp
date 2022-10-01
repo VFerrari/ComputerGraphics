@@ -1,5 +1,8 @@
 #include "Renderer.h"
 
+// OpenMP
+#include "omp.h"
+
 namespace Utils {
 static uint32_t ConvertToRGBA(const glm::vec4 &color) {
   uint8_t r = (uint8_t)(color.r * 255.f);
@@ -37,6 +40,7 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
   uint32_t width = m_FinalImage->GetWidth();
 
   // Draw each pixel
+  #pragma omp parallel for collapse(2)
   for (uint32_t y = 0; y < height; y++) {
     for (uint32_t x = 0; x < width; x++) {
       glm::vec4 color = PerPixel(x, y);
