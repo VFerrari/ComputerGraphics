@@ -1,5 +1,8 @@
 #include "Renderer.h"
 
+// Walnut
+#include "Walnut/Random.h"
+
 // OpenMP
 #include "omp.h"
 
@@ -39,8 +42,8 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
   uint32_t height = m_FinalImage->GetHeight();
   uint32_t width = m_FinalImage->GetWidth();
 
-  // Draw each pixel
-  #pragma omp parallel for collapse(2)
+// Draw each pixel
+#pragma omp parallel for collapse(2)
   for (uint32_t y = 0; y < height; y++) {
     for (uint32_t x = 0; x < width; x++) {
       glm::vec4 color = PerPixel(x, y);
@@ -64,14 +67,14 @@ glm::vec4 Renderer::PerPixel(uint32_t x, uint32_t y) {
   float multiplier = 1.f;
 
   // Bounce the ray N times
-  uint8_t bounces = 2;
+  uint8_t bounces = 5;
   for (uint8_t i = 0; i < bounces; i++) {
     // Trace ray and get data
     HitPayload payload = TraceRay(ray);
 
     // Check if the ray hit something
     if (payload.HitDistance < 0.f) {
-      glm::vec3 skyColor = glm::vec3(0.f);
+      glm::vec3 skyColor = glm::vec3(0.6f, 0.7f, 0.9f);
       color += skyColor * multiplier;
       break;
     }
@@ -83,12 +86,16 @@ glm::vec4 Renderer::PerPixel(uint32_t x, uint32_t y) {
 
     // Get color from light intensity and sphere albedo
     const Sphere &sphere = m_ActiveScene->Spheres[payload.ObjectIdx];
-    color += (sphere.Albedo * lightIntensity) * multiplier;
+    const Material &material = m_ActiveScene->Materials[sphere.MaterialIdx];
+    color += (material.Albedo * lightIntensity) * multiplier;
 
     // Move ray and prepare for next bounce
-    multiplier *= 0.7f;
+    multiplier *= 0.5f;
     ray.Origin = payload.WorldPosition + payload.WorldNormal * 0.0001f;
-    ray.Direction = glm::reflect(ray.Direction, payload.WorldNormal);
+    ray.Direction =
+        glm::reflect(ray.Direction, payload.WorldNormal +
+                                        material.Roughness *
+                                            Walnut::Random::Vec3(-0.5f, 0.5f));
   }
 
   return glm::vec4(color, 1.f);
