@@ -1,5 +1,8 @@
 #include "Renderer.h"
 
+// STL
+#include <cstring>
+
 // Walnut
 #include "Walnut/Random.h"
 
@@ -33,6 +36,9 @@ void Renderer::OnResize(uint32_t width, uint32_t height) {
 
   delete[] m_ImageData;
   m_ImageData = new uint32_t[width * height];
+
+  delete[] m_AccData;
+  m_AccData = new glm::vec4[width * height];
 }
 
 void Renderer::Render(const Scene &scene, const Camera &camera) {
@@ -42,17 +48,36 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
   uint32_t height = m_FinalImage->GetHeight();
   uint32_t width = m_FinalImage->GetWidth();
 
+  // Initialize acc data
+  if (m_FrameIdx == 1) {
+    memset(m_AccData, 0, width * height * sizeof(glm::vec4));
+  }
+
 // Draw each pixel
 #pragma omp parallel for collapse(2)
   for (uint32_t y = 0; y < height; y++) {
     for (uint32_t x = 0; x < width; x++) {
+      // Get frame color and accumulate
       glm::vec4 color = PerPixel(x, y);
-      color = glm::clamp(color, glm::vec4(0.f), glm::vec4(1.f));
-      m_ImageData[x + y * width] = Utils::ConvertToRGBA(color);
+      m_AccData[x + y * width] += color;
+
+      // Normalize accumulated color
+      glm::vec4 accColor = m_AccData[x + y * width];
+      accColor /= (float)m_FrameIdx;
+
+      // Clamp and set color
+      accColor = glm::clamp(accColor, glm::vec4(0.f), glm::vec4(1.f));
+      m_ImageData[x + y * width] = Utils::ConvertToRGBA(accColor);
     }
   }
 
   m_FinalImage->SetData(m_ImageData);
+
+  // Accumulate
+  if (m_Settings.Accumulate)
+    m_FrameIdx++;
+  else
+    m_FrameIdx = 1;
 }
 
 glm::vec4 Renderer::PerPixel(uint32_t x, uint32_t y) {

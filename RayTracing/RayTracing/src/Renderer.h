@@ -16,13 +16,19 @@
 
 class Renderer {
 public:
+  struct Settings {
+    bool Accumulate = true;
+  };
+public:
   Renderer() = default;
 
   void OnResize(uint32_t width, uint32_t height);
   void Render(const Scene &scene, const Camera &camera);
 
+  Settings &GetSettings() { return m_Settings; }
   std::shared_ptr<Walnut::Image> GetFinalImage() const { return m_FinalImage; }
 
+  void ResetFrameIdx() { m_FrameIdx = 1; }
 private:
   struct HitPayload {
     float HitDistance;
@@ -39,10 +45,15 @@ private:
   HitPayload Miss(const Ray &ray);
 
 private:
+  Settings m_Settings;
+
   std::shared_ptr<Walnut::Image> m_FinalImage;
 
   const Scene *m_ActiveScene = nullptr;
   const Camera *m_ActiveCamera = nullptr;
 
   uint32_t *m_ImageData = nullptr;
+  glm::vec4 *m_AccData = nullptr;
+
+  uint32_t m_FrameIdx = 1;
 };
