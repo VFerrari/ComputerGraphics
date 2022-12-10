@@ -19,6 +19,7 @@ public:
   struct Settings {
     bool Accumulate = true;
   };
+
 public:
   Renderer() = default;
 
@@ -29,6 +30,7 @@ public:
   std::shared_ptr<Walnut::Image> GetFinalImage() const { return m_FinalImage; }
 
   void ResetFrameIdx() { m_FrameIdx = 1; }
+
 private:
   struct HitPayload {
     float HitDistance;
@@ -48,6 +50,8 @@ private:
   Settings m_Settings;
 
   std::shared_ptr<Walnut::Image> m_FinalImage;
+
+  std::vector<uint32_t> m_ImageHorizontalIter, m_ImageVerticalIter;
 
   const Scene *m_ActiveScene = nullptr;
   const Camera *m_ActiveCamera = nullptr;

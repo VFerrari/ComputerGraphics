@@ -2,12 +2,10 @@
 
 // STL
 #include <cstring>
+#include <execution>
 
 // Walnut
 #include "Walnut/Random.h"
-
-// OpenMP
-#include "omp.h"
 
 namespace Utils {
 static uint32_t ConvertToRGBA(const glm::vec4 &color) {
@@ -39,6 +37,15 @@ void Renderer::OnResize(uint32_t width, uint32_t height) {
 
   delete[] m_AccData;
   m_AccData = new glm::vec4[width * height];
+
+  m_ImageHorizontalIter.resize(width);
+  m_ImageVerticalIter.resize(height);
+  for (uint32_t j = 0; j < width; j++) {
+    m_ImageHorizontalIter[j] = j;
+  }
+  for (uint32_t i = 0; i < height; i++) {
+    m_ImageVerticalIter[i] = i;
+  }
 }
 
 void Renderer::Render(const Scene &scene, const Camera &camera) {
@@ -53,23 +60,26 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
     memset(m_AccData, 0, width * height * sizeof(glm::vec4));
   }
 
-// Draw each pixel
-#pragma omp parallel for collapse(2)
-  for (uint32_t y = 0; y < height; y++) {
-    for (uint32_t x = 0; x < width; x++) {
-      // Get frame color and accumulate
-      glm::vec4 color = PerPixel(x, y);
-      m_AccData[x + y * width] += color;
+  // Draw each pixel
+  std::for_each(
+      std::execution::par, m_ImageVerticalIter.begin(),
+      m_ImageVerticalIter.end(), [this, width](uint32_t y) {
+        std::for_each(
+            std::execution::par, m_ImageHorizontalIter.begin(),
+            m_ImageHorizontalIter.end(), [this, width, y](uint32_t x) {
+              // Get frame color and accumulate
+              glm::vec4 color = PerPixel(x, y);
+              m_AccData[x + y * width] += color;
 
-      // Normalize accumulated color
-      glm::vec4 accColor = m_AccData[x + y * width];
-      accColor /= (float)m_FrameIdx;
+              // Normalize accumulated color
+              glm::vec4 accColor = m_AccData[x + y * width];
+              accColor /= (float)m_FrameIdx;
 
-      // Clamp and set color
-      accColor = glm::clamp(accColor, glm::vec4(0.f), glm::vec4(1.f));
-      m_ImageData[x + y * width] = Utils::ConvertToRGBA(accColor);
-    }
-  }
+              // Clamp and set color
+              accColor = glm::clamp(accColor, glm::vec4(0.f), glm::vec4(1.f));
+              m_ImageData[x + y * width] = Utils::ConvertToRGBA(accColor);
+            });
+      });
 
   m_FinalImage->SetData(m_ImageData);
 
