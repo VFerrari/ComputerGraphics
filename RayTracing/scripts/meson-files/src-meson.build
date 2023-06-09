@@ -30,7 +30,7 @@ walnut_deps = [
     dependency('vulkan'),
     dependency('glfw3'),
     dependency('glm'),
-    dependency('openmp')
+    dependency('tbb')
 ]
 
 entrylib = static_library(

@@ -46,6 +46,7 @@ void Renderer::OnResize(uint32_t width, uint32_t height) {
   for (uint32_t i = 0; i < height; i++) {
     m_ImageVerticalIter[i] = i;
   }
+  ResetFrameIdx();
 }
 
 void Renderer::Render(const Scene &scene, const Camera &camera) {
