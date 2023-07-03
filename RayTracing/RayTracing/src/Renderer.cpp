@@ -8,6 +8,7 @@
 #include "Walnut/Random.h"
 
 namespace Utils {
+
 static uint32_t ConvertToRGBA(const glm::vec4 &color) {
   uint8_t r = (uint8_t)(color.r * 255.f);
   uint8_t g = (uint8_t)(color.g * 255.f);
@@ -16,6 +17,24 @@ static uint32_t ConvertToRGBA(const glm::vec4 &color) {
 
   return (a << 24) | (b << 16) | (g << 8) | r;
 }
+
+static uint32_t PCG_Hash(uint32_t input) {
+  uint32_t state = input * 747796405u + 2891336453u;
+  uint32_t word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+  return (word >> 22u) ^ word;
+}
+
+static float RandomFloat(uint32_t &seed) {
+  seed = PCG_Hash(seed);
+  return (float)seed / (float)std::numeric_limits<uint32_t>::max();
+}
+
+static glm::vec3 InUnitSphere(uint32_t &seed) {
+  return glm::normalize(glm::vec3(RandomFloat(seed) * 2.f - 1.f,
+                                  RandomFloat(seed) * 2.f - 1.f,
+                                  RandomFloat(seed) * 2.f - 1.f));
+}
+
 } // namespace Utils
 
 void Renderer::OnResize(uint32_t width, uint32_t height) {
@@ -102,9 +121,15 @@ glm::vec4 Renderer::PerPixel(uint32_t x, uint32_t y) {
   glm::vec3 light(0.f);
   glm::vec3 contribution(1.f);
 
+  // Unique Seed
+  uint32_t seed = x + y * m_FinalImage->GetWidth();
+  seed *= m_FrameIdx;
+
   // Bounce the ray N times
   uint8_t bounces = 5;
   for (uint8_t i = 0; i < bounces; i++) {
+    seed += i;
+
     // Trace ray and get data
     HitPayload payload = TraceRay(ray);
 
@@ -123,8 +148,13 @@ glm::vec4 Renderer::PerPixel(uint32_t x, uint32_t y) {
 
     // Move ray and prepare for next bounce
     ray.Origin = payload.WorldPosition + payload.WorldNormal * 0.0001f;
-    ray.Direction =
-        glm::normalize(payload.WorldNormal + Walnut::Random::InUnitSphere());
+    if (m_Settings.SlowRandom) {
+      ray.Direction =
+          glm::normalize(payload.WorldNormal + Walnut::Random::InUnitSphere());
+    } else {
+      ray.Direction =
+          glm::normalize(payload.WorldNormal + Utils::InUnitSphere(seed));
+    }
   }
 
   return glm::vec4(light, 1.f);
